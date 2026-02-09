@@ -102,13 +102,13 @@ public function inbox() {
 }
 
 
-// public function favoriteCharacter() {
-//     return $this->belongsTo(GeneralCharacter::class, 'fav_character_id');
-// }
+public function favoriteCharacter() {
+    return $this->belongsTo(Character::class, 'fav_character_id');
+}
 
-// public function equippedNecklaces() {
-//     return $this->hasMany(UserEquippedNecklace::class);
-// }
+public function equippedNecklaces() {
+    return $this->hasMany(EquippedNecklace::class);
+}
 
 
 

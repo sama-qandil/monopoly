@@ -9,4 +9,11 @@ class Character extends Model
 {
     /** @use HasFactory<\Database\Factories\CharacterFactory> */
     use HasFactory;
+
+
+
+    public function users() {
+    return $this->belongsToMany(User::class, 'character_user', 'character_id', 'user_id')
+                ->withPivot('current_level', 'current_experience', 'is_selected');
+}
 }

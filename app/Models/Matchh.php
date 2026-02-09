@@ -11,7 +11,7 @@ class Matchh extends Model
     use HasFactory;
 
 
-    // Match.php
+   
 public function players() {
     return $this->belongsToMany(User::class, 'user_matches')
                 ->withPivot('gold_gained', 'gems_gained', 'rank', 'wins', 'loss', 'experience_gained');
