@@ -16,7 +16,8 @@ return new class extends Migration
             $table->integer('user1_id');
             $table->integer('user2_id');
             $table->string('sender_name');
-            $table->timestamps('delevryed_at');
+            $table->timestamp('delivered_at')->nullable();
+            $table->timestamps();
         });
     }
 
