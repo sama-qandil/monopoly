@@ -16,7 +16,7 @@ return new class extends Migration
             schema::create('gold_user', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Gold::class)->constrained()->cascadeOnDelete();
+            $table->foreignId('gold_id')->constrained('golds')->cascadeOnDelete();
       
         });
     }
