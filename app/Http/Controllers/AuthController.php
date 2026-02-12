@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DeviceLoginRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
@@ -10,14 +11,11 @@ use Laravel\Socialite\Facades\Socialite;
 
 class AuthController extends Controller
 {
-    public function deviceLogin(Request $request)
+    public function deviceLogin(DeviceLoginRequest $request)
     {
-        $request->validate([
-            'device_id' => 'required|string'
-        ]);
 
         //TODO: these data is default for the model, better using (model attributes)
-        $user = User::firstOrCreate(['device_id' => $request->device_id], [
+        $user = User::firstOrCreate(['device_id' => $request->validated()['device_id']], [
             //TODO: this should be unique , how to avoid collesion ? 
             'username' => 'User' . time(),
             
@@ -26,7 +24,7 @@ class AuthController extends Controller
         $token = $user->createToken('device_token')->plainTextToken;
 
         return $this->success([
-            'user'    => $user,
+            'user'    => new \App\Http\Resources\UserResource($user),
             'token'   => $token,
         ],'Logged in successfully');
     }
@@ -50,7 +48,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('device_token')->plainTextToken;
         return $this->success([
-            'user'    => $user,
+            'user'    => new \App\Http\Resources\UserResource($user),
             'token'   => $token,
         ],'User registered successfully');
     }
@@ -73,7 +71,7 @@ class AuthController extends Controller
             'password'    => Hash::make($validateduser['password']),
             'provider_id' => $validateduser['provider_id'] ?? $user->provider_id
         ]);
-        return $this->success([ 'user' => $user],'Account linked successfully');
+        return $this->success([ 'user' => new \App\Http\Resources\UserResource($user)],'Account linked successfully');
     }
 
 
@@ -94,7 +92,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('device_token')->plainTextToken;
         return $this->success([
-            'user'    => $user,
+             'user' => new \App\Http\Resources\UserResource($user),
             'token'   => $token,
         ],'Logged in successfully');
     }
@@ -114,6 +112,6 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return $this->success(['token' => $token, 'user' => $user]);
+        return $this->success(['token' => $token, 'user'    => new \App\Http\Resources\UserResource($user),]);
     }
 }

@@ -2,18 +2,18 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Matchh;
+use App\Models\MatchGame;
 use App\Http\Requests\StoreMatchhRequest;
 use App\Http\Requests\UpdateMatchhRequest;
 use Illuminate\Support\Facades\DB;
 
-class MatchhController extends Controller
+class MatchGameController extends Controller
 {
 
 
 
     public function endmatch($matchid){
-        $match=Matchh::with('players')->findOrFail($matchid);
+        $match=MatchGame::with('players')->findOrFail($matchid);
 
         DB::transaction(function() use ($match) {
             foreach($match->players as $player) {
@@ -69,7 +69,7 @@ class MatchhController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Matchh $matchh)
+    public function show(MatchGame $matchGame)
     {
         //
     }
@@ -77,23 +77,19 @@ class MatchhController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Matchh $matchh)
+    public function edit(MatchGame $matchGame)
     {
         //
     }
 
     /**
      * Update the specified resource in storage.
-     */
-    public function update(UpdateMatchhRequest $request, Matchh $matchh)
-    {
-        //
-    }
+ 
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Matchh $matchh)
+    public function destroy(MatchGame $matchGame)
     {
         //
     }
