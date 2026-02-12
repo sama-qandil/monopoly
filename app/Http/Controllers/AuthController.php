@@ -19,13 +19,8 @@ class AuthController extends Controller
         //TODO: these data is default for the model, better using (model attributes)
         $user = User::firstOrCreate(['device_id' => $request->device_id], [
             //TODO: this should be unique , how to avoid collesion ? 
-            'username' => 'User' . Str::random(5),
-            'gold' => '0',
-            'gems' => '0',
-            'avatar' => 'default.png',
-            'total_matches' => '0',
-            'wins' => '0',
-            'losses' => '0',
+            'username' => 'User' . time(),
+            
         ]);
 
         $token = $user->createToken('device_token')->plainTextToken;
@@ -51,12 +46,7 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'device_id' => Str::random(32),
-            'gold' => '0',
-            'gems' => '0',
-            'avatar' => 'default.png',
-            'total_matches' => '0',
-            'wins' => '0',
-            'losses' => '0',
+           
         ]);
 
         $token = $user->createToken('device_token')->plainTextToken;
@@ -117,11 +107,7 @@ class AuthController extends Controller
                 'provider_id'   => $socialUser->getId(),
                 'provider_name' => $provider,
                 'avatar'        => $socialUser->getAvatar(),
-                'gold' => '0',
-                'gems' => '0',
-                'total_matches' => '0',
-                'wins' => '0',
-                'losses' => '0',
+               
             ]
         );
 

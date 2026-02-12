@@ -17,7 +17,7 @@ return new class extends Migration
         Schema::create('matchhs', function (Blueprint $table) {
             $table->id();
             $table->string('map_name');
-            $table->integer('winner_id')->nullable();
+            // $table->integer('winner_id')->nullable();
             $table->timestamps();
         });
 
@@ -33,8 +33,7 @@ return new class extends Migration
             $table->integer('gold_gained');
             $table->integer('gems_gained');
             $table->integer('rank');
-            $table->integer('wins');
-            $table->integer('loss');
+
             $table->integer('experience_gained');
 
             
