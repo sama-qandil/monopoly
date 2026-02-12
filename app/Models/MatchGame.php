@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Matchh extends Model
+class MatchGame extends Model
 {
-    /** @use HasFactory<\Database\Factories\MatchhFactory> */
+    /** @use HasFactory<\Database\Factories\MatchFactory> */
     use HasFactory;
 
 

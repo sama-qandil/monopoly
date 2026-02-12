@@ -19,8 +19,6 @@ return new class extends Migration
         $table->string('device_id')->unique(); 
         $table->string('email')->unique()->nullable();
         $table->string('password')->nullable(); 
-
-        $table->string('country')->nullable();
   
         $table->integer('current_experience')->default(0); 
         $table->integer('wins')->default(0); 

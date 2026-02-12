@@ -5,6 +5,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\characterResource;
+use App\Http\Resources\DiceResource;
+use App\Http\Resources\NecklaceResource;
+use App\Http\Resources\GoldResource;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -76,7 +81,7 @@ public function getitemDetails(Request $request, $category, $id) {
         });
 
         
-    return $this->success($character,'Character purchased successfully!');
+    return $this->success(new characterResource($character),'Character purchased successfully!');
 
     }
 
@@ -105,8 +110,9 @@ public function getitemDetails(Request $request, $category, $id) {
             $user->dices()->attach($dice->id);
         });
 
-        return $this->success($dice,'dice purchased successfully!');
+        return $this->success(new DiceResource($dice),'dice purchased successfully!');
     }
+
 
     public function buyNecklaces(Request $request, $id){
         $user=$request->user();
@@ -132,7 +138,7 @@ public function getitemDetails(Request $request, $category, $id) {
             $user->necklaces()->attach($necklace->id);
         });
 
-        return $this->success($necklace,'Necklace purchased successfully!');
+        return $this->success(new NecklaceResource($necklace),'Necklace purchased successfully!');
     }
 
 
@@ -154,7 +160,7 @@ public function getitemDetails(Request $request, $category, $id) {
             $user->increment('gold', $gold->gold);
         });
 
-        return $this->success(null,'Gold purchased successfully!');
+        return $this->success(new GoldResource($gold),'Gold purchased successfully!');
     }
     
 
