@@ -21,8 +21,7 @@ return new class extends Migration
         $table->string('password')->nullable(); 
 
         $table->string('country')->nullable();
-        $table->foreignIdFor(Country::class)->constrained()->cascadeOnDelete(); //TODO: the flag_icon is country related , normalize it with the country name into seperate table
-        $table->integer('level')->default(1);
+  
         $table->integer('current_experience')->default(0); 
         $table->integer('wins')->default(0); 
         $table->integer('loses')->default(0); //TODO: #minor| this should be loses Not losses , (loses vs losses ) english meaning is different not code related

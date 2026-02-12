@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\GeneralCharacter;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -87,7 +88,7 @@ protected $appends = ['avatar_url'];
 
 
 public function characters() {
-    return $this->belongsToMany(Character::class, 'character_user', 'user_id', 'character_id')
+    return $this->belongsToMany(Character::class, )
                 ->withPivot('current_level', 'current_experience', 'is_selected');
 }
 
@@ -95,7 +96,7 @@ public function dices() {
     return $this->belongsToMany(Dice::class, 'user_dice');
 }
 
-public function golds() {
+public function gold() {
     return $this->belongsToMany(Gold::class, 'user_gold');
 }
 
@@ -121,10 +122,17 @@ public function claimedRewards() {
                 ->withTimestamps(); 
 }
 
-public function inbox() {
-    return $this->hasMany(Inbox::class);
+public function friendInvites(){
+    return $this->hasMany(Friend_invite::class, 'receiver_id');
 }
 
+public function systemMessages(){
+    return $this->hasMany(System_message::class, 'receiver_id');
+}
+
+public function friendMessages(){
+    return $this->hasMany(Friend_message::class, 'receiver_id');
+}
 
 public function favoriteCharacter() {
     return $this->belongsTo(Character::class, 'fav_character_id');

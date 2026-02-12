@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('system_messages', function (Blueprint $table) {
             $table->id();
-            $table->string('content');
+            $table->string('title');
+            $table->text('content');
             $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
         });

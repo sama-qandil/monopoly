@@ -13,7 +13,7 @@ class Character extends Model
 
 
     public function users() {
-    return $this->belongsToMany(User::class, 'character_user', 'character_id', 'user_id')
+    return $this->belongsToMany(User::class, )
                 ->withPivot('current_level', 'current_experience', 'is_selected');
 }
 }

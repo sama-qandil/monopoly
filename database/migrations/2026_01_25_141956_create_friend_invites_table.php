@@ -12,12 +12,16 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('friend_invites', function (Blueprint $table) {
-            $table->id();
-            $table->integer('user1_id');
-            $table->integer('user2_id');
-            $table->string('sender_name');
-            $table->timestamp('delivered_at')->nullable();
-            $table->timestamps();
+
+        $table->id();
+        $table->foreignIdFor(App\Models\User::class, 'sender_id');
+        $table->foreignIdFor(App\Models\User::class, 'receiver_id');
+        
+        $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
+        
+        $table->timestamp('delivered_at')->nullable();
+        
+        $table->timestamps();
         });
     }
 
