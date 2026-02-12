@@ -25,11 +25,10 @@ class AuthController extends Controller
 
         $token = $user->createToken('device_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Logged in successfully',
+        return $this->success([
             'user'    => $user,
             'token'   => $token,
-        ], 200);
+        ],'Logged in successfully');
     }
 
     public function register(Request $request)
@@ -50,11 +49,10 @@ class AuthController extends Controller
         ]);
 
         $token = $user->createToken('device_token')->plainTextToken;
-        return response()->json([
-            'message' => 'User registered successfully',
+        return $this->success([
             'user'    => $user,
-            'token'   => $token
-        ], 201);
+            'token'   => $token,
+        ],'User registered successfully');
     }
 
 
@@ -62,7 +60,7 @@ class AuthController extends Controller
     {
         $user = $request->user();
         if ($user->email) {
-            return response()->json(['message' => 'Account already linked to an email'], 400);
+            return $this->error('Account already linked to an email', 400);
         }
 
         $validateduser = $request->validate([
@@ -70,8 +68,12 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
             'provider_id' => 'string|nullable'
         ]);
-        $user->update($validateduser);
-        return response()->json(['message' => 'Account linked successfully', 'user' => $user], 200);
+        $user->update([
+            'email'       => $validateduser['email'],
+            'password'    => Hash::make($validateduser['password']),
+            'provider_id' => $validateduser['provider_id'] ?? $user->provider_id
+        ]);
+        return $this->success([ 'user' => $user],'Account linked successfully');
     }
 
 
@@ -87,15 +89,14 @@ class AuthController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
         if (!$user || !Hash::check($validated['password'], $user->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return $this->error( 'Invalid credentials', 401);
         }
 
         $token = $user->createToken('device_token')->plainTextToken;
-        return response()->json([
-            'message' => 'Logged in successfully',
+        return $this->success([
             'user'    => $user,
             'token'   => $token,
-        ], 200);
+        ],'Logged in successfully');
     }
     public function handleProviderCallback($provider)
     {
@@ -113,6 +114,6 @@ class AuthController extends Controller
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['token' => $token, 'user' => $user]);
+        return $this->success(['token' => $token, 'user' => $user]);
     }
 }
