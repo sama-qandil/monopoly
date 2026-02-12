@@ -13,7 +13,7 @@ class Matchh extends Model
 
    
 public function players() {
-    return $this->belongsToMany(User::class, 'user_matches')
+    return $this->belongsToMany(User::class, 'matchh_user')
                 ->withPivot('gold_gained', 'gems_gained', 'rank', 'wins', 'loss', 'experience_gained');
 }
 }

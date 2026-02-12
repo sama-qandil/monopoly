@@ -9,4 +9,11 @@ class Friend_message extends Model
 {
     /** @use HasFactory<\Database\Factories\FriendMessagesFactory> */
     use HasFactory;
+
+
+    public function inboxes()
+{
+ 
+    return $this->morphMany(Inbox::class, 'inboxable');
+}
 }

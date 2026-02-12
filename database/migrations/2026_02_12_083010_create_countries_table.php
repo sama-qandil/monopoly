@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inboxes', function (Blueprint $table) {
+        Schema::create('countries', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(App\Models\User::class);
-            $table->string('type');
+            $table->string('name')->unique(); 
+            $table->string('iso_code', 3);    
+            $table->string('flag_icon')->nullable();      
             $table->timestamps();
         });
     }
@@ -24,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inboxes');
+        Schema::dropIfExists('countries');
     }
 };

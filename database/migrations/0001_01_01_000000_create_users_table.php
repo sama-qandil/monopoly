@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Country;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -14,18 +15,16 @@ return new class extends Migration
 
     Schema::create('users', function (Blueprint $table) {
         $table->id();
-        $table->string('username'); //TODO: this should be unique for user search 
+        $table->string('username')->unique(); //TODO: this should be unique for user search 
         $table->string('device_id')->unique(); 
         $table->string('email')->unique()->nullable();
         $table->string('password')->nullable(); 
 
         $table->string('country')->nullable();
-        $table->string('flag_icon')->nullable(); //TODO: the flag_icon is country related , normalize it with the country name into seperate table
-        $table->integer('level')->default(1);
+  
         $table->integer('current_experience')->default(0); 
-        $table->integer('total_matches')->default(0); //TODO: total_matches is a derived column should be calculated from wins and losses 
         $table->integer('wins')->default(0); 
-        $table->integer('losses')->default(0); //TODO: #minor| this should be loses Not losses , (loses vs losses ) english meaning is different not code related
+        $table->integer('loses')->default(0); //TODO: #minor| this should be loses Not losses , (loses vs losses ) english meaning is different not code related
 
        
         $table->integer('gold')->default(0);

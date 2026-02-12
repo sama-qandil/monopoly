@@ -178,7 +178,7 @@ abstract class Controller
     {
         return [
             'total' => $paginator->total(),
-            'count' => $paginator->count(),
+            'count' => count($paginator->items()),
             'per_page' => $paginator->perPage(),
             'current_page' => $paginator->currentPage(),
             'total_pages' => $paginator->lastPage(),

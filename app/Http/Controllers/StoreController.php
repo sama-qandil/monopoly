@@ -12,8 +12,39 @@ use App\Models\Character;
 use App\Models\Dice;
 use App\Models\Necklace;
 use App\Models\Gold;
+use App\Models\Jewelry;
 
 class StoreController extends Controller {
+
+public function getitemByCategory(Request $request, $category) {
+    $data=match($category){
+        'characters'=>Character::all(),
+        'dices'=>Dice::all(),
+        'necklaces'=>Necklace::all(),
+        'gold'=>Gold::all(),
+        'jewelries'=>Jewelry::all(),
+        default => null,
+
+    };
+    return $this->success($data,"Items of category $category retrieved successfully");
+}
+
+
+public function getitemDetails(Request $request, $category, $id) {
+    $data=match($category){
+        'characters'=>Character::query(),
+        'dices'=>Dice::query(),
+        'necklaces'=>Necklace::query(),
+        'gold'=>Gold::query(),
+        'jewelries'=>Jewelry::query(),
+        default=> null,
+
+    };
+    $item=$data->findOrFail($id);
+    return $this->success($item,"Item details retrieved successfully");
+}
+
+
 
     public function buyCharacter(Request $request, $id) {
         $user = $request->user(); 
@@ -21,7 +52,7 @@ class StoreController extends Controller {
 
         
         if ($user->characters()->where('character_id', $id)->exists()) {
-            return response()->json(['message' => 'You already own this character!'], 400);
+            return $this->error(null,'You already own this character!');
         }
 
         
@@ -29,7 +60,7 @@ class StoreController extends Controller {
         $price=$character->gold_price > 0 ? $character->gold_price : $character->gem_price; 
 
         if ($user->$currency < $price) {
-            return response()->json(['message' => 'your balance is not enough!'], 400);
+            return $this->error(null,'your balance is not enough!');
         }
         
         DB::transaction(function () use ($user, $character, $currency, $price) {
@@ -44,7 +75,9 @@ class StoreController extends Controller {
             ]);
         });
 
-        return response()->json(['message' => 'Character purchased successfully!', 'remaining_gold' => $user->gold]);
+        
+    return $this->success($character,'Character purchased successfully!');
+
     }
 
 
@@ -55,12 +88,12 @@ class StoreController extends Controller {
 
         
         if ($user->dices()->where('dice_id', $id)->exists()) {
-            return response()->json(['message' => 'You already own this dice!'], 400);
+            return $this->error(null,'You already own this dice!');
         }
 
         
        if($user->gems < $dice->gems_cost){
-            return response()->json(['message' => 'your balance is not enough!'], 400);
+            return $this->error(null,'your balance is not enough!');
         }
       
         
@@ -72,7 +105,7 @@ class StoreController extends Controller {
             $user->dices()->attach($dice->id);
         });
 
-        return response()->json(['message' => 'dice purchased successfully!', ]);
+        return $this->success($dice,'dice purchased successfully!');
     }
 
     public function buyNecklaces(Request $request, $id){
@@ -80,15 +113,15 @@ class StoreController extends Controller {
         $necklace=Necklace::findOrFail($id);
         
         if ($user->necklaces()->where('necklace_id', $id)->exists()) {
-            return response()->json(['message' => 'You already own this necklace!'], 400);
+            return $this->error(null,'You already own this necklace!');
         }
 
         
-        $currency=$necklace-> gold_price > 0  ? 'gold' : 'gems';
-        $price=$necklace->gold_price > 0 ? $necklace->gold_cost : $necklace->gems_cost; 
+        $currency=$necklace-> gold_cost > 0  ? 'gold' : 'gems';
+        $price=$necklace->gold_cost > 0 ? $necklace->gold_cost : $necklace->gems_cost; 
 
         if ($user->$currency < $price) {
-            return response()->json(['message' => 'your balance is not enough!'], 400);
+            return $this->error(null,'your balance is not enough!');
         }
         
         DB::transaction(function () use ($user, $necklace, $currency, $price) {
@@ -99,7 +132,7 @@ class StoreController extends Controller {
             $user->necklaces()->attach($necklace->id);
         });
 
-        return response()->json(['message' => 'Necklace purchased successfully!', ]);
+        return $this->success($necklace,'Necklace purchased successfully!');
     }
 
 
@@ -108,20 +141,20 @@ class StoreController extends Controller {
         $user=request()->user();
         $gold=Gold::findOrFail($id);
 
-        if($user->golds()->where('gold_id', $id)->exists()) {
-            return response()->json(['message' => 'You already own this gold package!'], 400);
+        if($user->gold()->where('gold_id', $id)->exists()) {
+            return $this->error(null,'You already own this gold package!');
         }
 
         if($user->gems < $gold->price){
-            return response()->json(['message' => 'your balance is not enough!'], 400);
+            return $this->error(null,'your balance is not enough!');
         }
 
         DB::transaction(function () use ($user, $gold) {
             $user->decrement('gems', $gold->gems_cost);
-            $user->golds()->attach($gold->id);
+            $user->increment('gold', $gold->gold);
         });
 
-        return response()->json(['message' => 'Gold purchased successfully!', 'remaining_gems' => $user->gems]);
+        return $this->success(null,'Gold purchased successfully!');
     }
     
 

@@ -8,6 +8,8 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Models\GeneralCharacter;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
@@ -20,19 +22,42 @@ class User extends Authenticatable
      * @var list<string>
      */
    
-    protected $fillable = [
-        'device_id',
-        'username',
-        'email',
-        'password',
-        'gold',
-        'gems',
-        'avatar',
-        'total_matches',
-        'wins',
-        'losses',
-        'level',
+    protected $guarded = []; 
+
+    protected $attributes = [
+        'gold' => '0',
+            'gems' => '0',
+            'avatar' => 'default.png',
+            'total_matches' => '0',
+            'wins' => '0',
+            'loses' => '0',
     ];
+
+
+    public function totalMatches():Attribute{
+        return Attribute::make(
+            get: fn()=> $this->wins + $this->loses,
+        );
+    }
+
+
+
+protected function avatarUrl(): Attribute
+{
+    return Attribute::make(
+        get:function(){
+            if($this->avatar){
+                return asset('storage/' . $this->avatar);
+            }
+
+            return asset('storage/default.png');
+        }
+
+    );
+
+}
+
+protected $appends = ['avatar_url'];
 
     /**
      * The attributes that should be hidden for serialization.
@@ -63,7 +88,7 @@ class User extends Authenticatable
 
 
 public function characters() {
-    return $this->belongsToMany(Character::class, 'character_user', 'user_id', 'character_id')
+    return $this->belongsToMany(Character::class, )
                 ->withPivot('current_level', 'current_experience', 'is_selected');
 }
 
@@ -71,7 +96,7 @@ public function dices() {
     return $this->belongsToMany(Dice::class, 'user_dice');
 }
 
-public function golds() {
+public function gold() {
     return $this->belongsToMany(Gold::class, 'user_gold');
 }
 
@@ -97,10 +122,17 @@ public function claimedRewards() {
                 ->withTimestamps(); 
 }
 
-public function inbox() {
-    return $this->hasMany(Inbox::class);
+public function friendInvites(){
+    return $this->hasMany(Friend_invite::class, 'receiver_id');
 }
 
+public function systemMessages(){
+    return $this->hasMany(System_message::class, 'receiver_id');
+}
+
+public function friendMessages(){
+    return $this->hasMany(Friend_message::class, 'receiver_id');
+}
 
 public function favoriteCharacter() {
     return $this->belongsTo(Character::class, 'fav_character_id');
@@ -116,6 +148,10 @@ public function matches() {
     return $this->belongsToMany(Matchh::class, 'matchh_user', 'user_id', 'matchh_id')
                 ->withPivot('gold_gained', 'gems_gained', 'rank', 'wins', 'loss', 'experience_gained', 'character_id')
                 ->withTimestamps();
+}
+
+public function country(){
+    return $this->belongsTo(Country::class);
 }
 
 }

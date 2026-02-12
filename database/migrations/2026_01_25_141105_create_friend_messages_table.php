@@ -14,9 +14,10 @@ return new class extends Migration
         Schema::create('friend_messages', function (Blueprint $table) {
             $table->id();
             $table->integer('sender_id');
-            $table->string('receiver_id');
-            $table->string('content');
+            $table->integer('receiver_id');
+            $table->text('content');
             $table->timestamp('delivered_at');
+            $table->timestamps();
         });
     }
 

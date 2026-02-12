@@ -11,12 +11,18 @@ class Inbox extends Model
     use HasFactory;
 
 
+
+    public function inboxable(){
+        return $this->morphTo();
+    }
+
+
 public function friendMessage() {
-    return $this->belongsTo(FriendMsg::class, 'id', 'id');
+    return $this->belongsTo(Friend_message::class, 'id', 'id');
 }
 
 public function invite() {
-    return $this->belongsTo(FriendInvite::class, 'id', 'id');
+    return $this->belongsTo(Friend_invite::class, 'id', 'id');
 }
 
 }

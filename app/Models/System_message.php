@@ -9,4 +9,10 @@ class System_message extends Model
 {
     /** @use HasFactory<\Database\Factories\SystemMessageFactory> */
     use HasFactory;
+
+    public function inboxes()
+{
+  
+    return $this->morphMany(Inbox::class, 'inboxable');
+}
 }

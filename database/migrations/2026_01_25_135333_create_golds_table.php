@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('golds', function (Blueprint $table) {
+        Schema::create('gold', function (Blueprint $table) {
             $table->id();
             $table->integer('gems_cost');
             $table->string('icon');

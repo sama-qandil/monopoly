@@ -19,22 +19,16 @@ class AuthController extends Controller
         //TODO: these data is default for the model, better using (model attributes)
         $user = User::firstOrCreate(['device_id' => $request->device_id], [
             //TODO: this should be unique , how to avoid collesion ? 
-            'username' => 'User' . Str::random(5),
-            'gold' => '0',
-            'gems' => '0',
-            'avatar' => 'default.png',
-            'total_matches' => '0',
-            'wins' => '0',
-            'losses' => '0',
+            'username' => 'User' . time(),
+            
         ]);
 
         $token = $user->createToken('device_token')->plainTextToken;
 
-        return response()->json([
-            'message' => 'Logged in successfully',
+        return $this->success([
             'user'    => $user,
             'token'   => $token,
-        ], 200);
+        ],'Logged in successfully');
     }
 
     public function register(Request $request)
@@ -51,20 +45,14 @@ class AuthController extends Controller
             'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
             'device_id' => Str::random(32),
-            'gold' => '0',
-            'gems' => '0',
-            'avatar' => 'default.png',
-            'total_matches' => '0',
-            'wins' => '0',
-            'losses' => '0',
+           
         ]);
 
         $token = $user->createToken('device_token')->plainTextToken;
-        return response()->json([
-            'message' => 'User registered successfully',
+        return $this->success([
             'user'    => $user,
-            'token'   => $token
-        ], 201);
+            'token'   => $token,
+        ],'User registered successfully');
     }
 
 
@@ -72,7 +60,7 @@ class AuthController extends Controller
     {
         $user = $request->user();
         if ($user->email) {
-            return response()->json(['message' => 'Account already linked to an email'], 400);
+            return $this->error('Account already linked to an email', 400);
         }
 
         $validateduser = $request->validate([
@@ -80,8 +68,12 @@ class AuthController extends Controller
             'password' => 'required|string|min:6',
             'provider_id' => 'string|nullable'
         ]);
-        $user->update($validateduser);
-        return response()->json(['message' => 'Account linked successfully', 'user' => $user], 200);
+        $user->update([
+            'email'       => $validateduser['email'],
+            'password'    => Hash::make($validateduser['password']),
+            'provider_id' => $validateduser['provider_id'] ?? $user->provider_id
+        ]);
+        return $this->success([ 'user' => $user],'Account linked successfully');
     }
 
 
@@ -97,15 +89,14 @@ class AuthController extends Controller
 
         $user = User::where('email', $validated['email'])->first();
         if (!$user || !Hash::check($validated['password'], $user->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
+            return $this->error( 'Invalid credentials', 401);
         }
 
         $token = $user->createToken('device_token')->plainTextToken;
-        return response()->json([
-            'message' => 'Logged in successfully',
+        return $this->success([
             'user'    => $user,
             'token'   => $token,
-        ], 200);
+        ],'Logged in successfully');
     }
     public function handleProviderCallback($provider)
     {
@@ -117,16 +108,12 @@ class AuthController extends Controller
                 'provider_id'   => $socialUser->getId(),
                 'provider_name' => $provider,
                 'avatar'        => $socialUser->getAvatar(),
-                'gold' => '0',
-                'gems' => '0',
-                'total_matches' => '0',
-                'wins' => '0',
-                'losses' => '0',
+               
             ]
         );
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return response()->json(['token' => $token, 'user' => $user]);
+        return $this->success(['token' => $token, 'user' => $user]);
     }
 }
