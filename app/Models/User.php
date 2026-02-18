@@ -127,7 +127,7 @@ public function friendInvites(){
 }
 
 public function systemMessages(){
-    return $this->hasMany(System_message::class, 'receiver_id');
+    return $this->belongsToMany(System_message::class, 'system_message_user', 'user_id', 'system_message_id');
 }
 
 public function friendMessages(){

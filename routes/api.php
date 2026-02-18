@@ -5,26 +5,21 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\AuthController;
 
-// Route::get('/user', function (Request $request) {
-//     return $request->user();
-// })->middleware('auth:sanctum');
-
-// Route::post('/register',[UserController::class],'register');
+Route::get('/user', function (Request $request) {
+    return $request->user();
+})->middleware('auth:sanctum');
 
 
-
-// Route::post('/login',[UserController::class],'login');
 Route::get('welcome', function(){
     return 'Welcome to the API';
 });
 
-Route::get('user/{id}',[UserController::class,'checkUser'] );
 
 Route::post('/device-login', [AuthController::class, 'deviceLogin']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user-profile', function (Request $request) {
-        return $request->user();
+        return new \App\Http\Resources\UserResource($request->user());
     });
 });
 

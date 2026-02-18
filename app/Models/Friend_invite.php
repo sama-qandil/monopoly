@@ -13,6 +13,6 @@ class Friend_invite extends Model
     public function inboxes()
 {
   
-    return $this->morphMany(Inbox::class, 'inboxable');
+    return $this->hasMany(User::class);
 }
 }

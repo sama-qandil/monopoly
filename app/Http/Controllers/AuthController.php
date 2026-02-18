@@ -96,6 +96,19 @@ class AuthController extends Controller
             'token'   => $token,
         ],'Logged in successfully');
     }
+
+public function logout(Request $request){
+    $request->user()->tokens()->delete();
+    return $this->success(null,'Logged out successfully');
+}
+
+
+
+
+
+
+
+
     public function handleProviderCallback($provider)
     {
         $socialUser = Socialite::driver($provider)->user();

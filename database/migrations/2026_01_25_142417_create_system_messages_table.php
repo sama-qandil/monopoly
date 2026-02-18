@@ -18,6 +18,14 @@ return new class extends Migration
             $table->timestamp('delivered_at')->nullable();
             $table->timestamps();
         });
+
+        schema::create('system_message_user', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('system_message_id')->constrained()->onDelete('cascade');
+            $table->boolean('is_collected')->default(false);
+            $table->timestamps();
+        });
     }
 
     /**
