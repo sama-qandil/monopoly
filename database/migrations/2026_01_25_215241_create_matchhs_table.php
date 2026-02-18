@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\Matchh;
+use App\Models\MatchGame;
 use App\Models\User;
 use App\Models\Character;
 
@@ -14,7 +14,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('matchhs', function (Blueprint $table) {
+        Schema::create('matchGames', function (Blueprint $table) {
             $table->id();
             $table->string('map_name');
             // $table->integer('winner_id')->nullable();
@@ -24,9 +24,9 @@ return new class extends Migration
 
 
 
-        Schema::create('matchh_user', function (Blueprint $table) {
+        Schema::create('matchGame_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Matchh::class);
+            $table->foreignIdFor(MatchGame::class);
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Character::class);
 
