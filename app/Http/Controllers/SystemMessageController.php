@@ -8,47 +8,20 @@ use Illuminate\Support\Facades\DB;
 
 class SystemMessageController extends Controller {
 
-public function broadcastReward(Request $request) {
-        $message = System_message::create([
-            'title' => $request->title,
-            'content' => $request->content,
-            'reward_type' => $request->reward_type,
-            'reward_amount' => $request->reward_amount,
-        ]);
+public function index(Request $request) {
+    $messages = $request->user()->systemMessages()
+        ->select('system_messages.*')
+        ->withPivot('is_read')
+        ->latest()
+        ->get();
 
-      
-        $userIds = User::pluck('id');
-        $message->users()->attach($userIds);
+    return $this->success($messages, "messages retrieved successfully");
+}
 
-        return $this->success(null, "the system message has been broadcasted to all users successfully");
-    }
-
-    public function collect(Request $request, $messageId) {
-        $user = $request->user();
-
-      
-        $message = $user->systemMessages()
-                        ->where('system_message_id', $messageId)
-                        ->wherePivot('is_collected', false)
-                        ->first();
-
-        if (!$message) {
-            return $this->error("This system message is not available for collection.");
-        }
-
-        DB::transaction(function () use ($user, $message) {
-            // تحديث رصيد اللاعب
-            $user->increment($message->reward_type, $message->reward_amount);
-
-            // تحديث حالة التحصيل في الجدول الوسيط (Pivot) لهذا اللاعب فقط
-            $user->systemMessages()->updateExistingPivot($message->id, [
-                'is_collected' => true
-            ]);
-        });
-
-        return $this->success([
-            'gold' => $user->gold,
-            'gems' => $user->gems
-        ], "!You have successfully collected the reward from the system message");
-    }
+public function markAsRead(Request $request, $id) {
+    $request->user()->systemMessages()->updateExistingPivot($id, [
+        'is_read' => true
+    ]);
+    return $this->success(null, "message marked as read successfully");
+}
 }

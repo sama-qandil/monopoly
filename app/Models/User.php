@@ -28,7 +28,6 @@ class User extends Authenticatable
         'gold' => '0',
         'gems' => '0',
         'avatar' => 'default.png',
-        'total_matches' => '0', //TODO: this should be calculated based on wins and losses, not stored in the database
         'wins' => '0',
         'loses' => '0',
     ];
@@ -41,21 +40,15 @@ class User extends Authenticatable
         );
     }
 
+    
 
 
-    protected function avatarUrl(): Attribute
-    {
-        return Attribute::make(
-            get: function () {
-                if ($this->avatar) {
-                    return asset('storage/' . $this->avatar);
-                }
 
-                return asset('storage/default.png');
-            }
+public function getAvatarUrlAttribute($value)
+{
 
-        );
-    }
+    return $value ? asset('storage/users/' . $value) : asset('images/default_user.png');
+}
 
     protected $appends = ['avatar_url'];
 
@@ -158,7 +151,7 @@ class User extends Authenticatable
 
     public function matches()
     {
-        return $this->belongsToMany(Matchh::class, 'matchh_user', 'user_id', 'matchh_id') //TODO: Matchh doesn't exist anymore , review the codebase for related changes
+        return $this->belongsToMany(MatchGame::class, 'match_user', 'user_id', 'match_id')
             ->withPivot('gold_gained', 'gems_gained', 'rank', 'wins', 'loss', 'experience_gained', 'character_id')
             ->withTimestamps();
     }

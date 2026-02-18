@@ -3,37 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\DeviceLoginRequest;
+use App\Http\Requests\LinkAccountRequest;
+use App\Http\Requests\RegisterRequest;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
+use App\Http\Resources\UserResource;
+use App\Http\Resources;
+use App\Http\Requests\loginRequest;
+
 
 class AuthController extends Controller
 {
     public function deviceLogin(DeviceLoginRequest $request)
     {
-
-        $user = User::firstOrCreate(['device_id' => $request->validated()['device_id']], [
+        $validated=$request->validated();
+        $user = User::firstOrCreate(['device_id' => $request->$validated['device_id']], [
             'username' => 'User' . time(),
         ]);
 
         $token = $user->createToken('device_token')->plainTextToken;
 
         return $this->success([
-            'user'    => new \App\Http\Resources\UserResource($user),
+            'user'    => new UserResource($user),
             'token'   => $token,
         ],'Logged in successfully');
     }
 
-    public function register(Request $request)
+    public function register(RegisterRequest $request)
     {
-        $validated = $request->validate([
-            'username' => 'required|string|max:40',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-        ]);
-
+        $validated = $request->validated();
 
         $user = User::create([
             'username' => $validated['username'],
@@ -51,18 +52,15 @@ class AuthController extends Controller
     }
 
 
-    public function LinkAccount(Request $request)
+    public function LinkAccount(LinkAccountRequest $request)
     {
         $user = $request->user();
         if ($user->email) {
             return $this->error('Account already linked to an email', 400);
         }
 
-        $validateduser = $request->validate([
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:6',
-            'provider_id' => 'string|nullable'
-        ]);
+        $validateduser = $request->validated();
+
         $user->update([
             'email'       => $validateduser['email'],
             'password'    => Hash::make($validateduser['password']),
@@ -75,12 +73,9 @@ class AuthController extends Controller
 
 
 
-    public function login(Request $request)
+    public function login(LoginRequest $request)
     {
-        $validated = $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string|min:6',
-        ]);
+        $validated = $request->validated();
 
         $user = User::where('email', $validated['email'])->first();
         if (!$user || !Hash::check($validated['password'], $user->password)) {
@@ -94,15 +89,12 @@ class AuthController extends Controller
         ],'Logged in successfully');
     }
 
+
+
 public function logout(Request $request){
     $request->user()->tokens()->delete();
     return $this->success(null,'Logged out successfully');
 }
-
-
-
-
-
 
 
 
