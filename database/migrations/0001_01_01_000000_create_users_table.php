@@ -15,22 +15,20 @@ return new class extends Migration
 
     Schema::create('users', function (Blueprint $table) {
         $table->id();
-        $table->string('username')->unique(); //TODO: this should be unique for user search 
+        $table->string('username')->unique(); 
         $table->string('device_id')->unique(); 
         $table->string('email')->unique()->nullable();
         $table->string('password')->nullable(); 
   
         $table->integer('current_experience')->default(0); 
         $table->integer('wins')->default(0); 
-        $table->integer('loses')->default(0); //TODO: #minor| this should be loses Not losses , (loses vs losses ) english meaning is different not code related
+        $table->integer('loses')->default(0); 
 
        
         $table->integer('gold')->default(0);
         $table->integer('gems')->default(0);
         
-        //TODO: default.png would break if the image name changed , always store the relative path not the filename only 
-        // search on the laravel best practice to store images via api (HINT: asset() function ) 
-        $table->string('avatar')->default('default.png');
+        $table->string('avatar')->default('default.png'); //remove db default and handle it in the model accessor (HINT: avatar_url)
         
         $table->integer('fav_character_id')->nullable();
 
