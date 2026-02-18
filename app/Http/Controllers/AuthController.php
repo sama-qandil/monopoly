@@ -14,11 +14,8 @@ class AuthController extends Controller
     public function deviceLogin(DeviceLoginRequest $request)
     {
 
-        //TODO: these data is default for the model, better using (model attributes)
         $user = User::firstOrCreate(['device_id' => $request->validated()['device_id']], [
-            //TODO: this should be unique , how to avoid collesion ? 
             'username' => 'User' . time(),
-            
         ]);
 
         $token = $user->createToken('device_token')->plainTextToken;
