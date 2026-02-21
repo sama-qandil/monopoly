@@ -13,11 +13,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('progress', function (Blueprint $table) {
+        Schema::create('task_user', function (Blueprint $table) {
             $table->foreignIdFor(User::class);
             $table->foreignIdFor(Task::class);
-            $table->integer('current_progress');
-            $table->boolean('is_claimed')->default(false);
+            $table->integer('current_count')->default(0);
+            $table->boolean('is_completed')->default(false);
+
+            $table->boolean('is_collected')->default(false);
             $table->timestamps();
         });
     }
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('progress');
+        Schema::dropIfExists('task_user');
     }
 };

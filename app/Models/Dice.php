@@ -8,19 +8,12 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 class Dice extends Model
 {
 
-    protected function iconUrl(): Attribute
+
+
+public function getIconUrlAttribute($value)
 {
-    return Attribute::make(
-        get:function(){
-            if($this->icon){
-                return asset('storage/' . $this->icon);
-            }
 
-            return asset('storage/default.png');
-        }
-
-    );
-
+    return $value ? asset('storage/dices/' . $value) : asset('images/default_dice.png');
 }
 
 protected $appends = ['icon_url'];

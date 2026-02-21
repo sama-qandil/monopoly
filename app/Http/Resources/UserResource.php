@@ -17,15 +17,30 @@ class UserResource extends JsonResource
         return[
             'name'=>$this->username,
             'email'=>$this->email,
-            'country' => $this->country ? $this->country->name : null,
-            'avatar'=>$this->avatar,
-            'gold'=>$this->gold,
-            'gems'=>$this->gems,
-            'current_experience'=>$this->current_experience,
-            'wins'=>$this->wins,
-            'loses'=>$this->loses,
-            'total_matches'=>$this->total_matches,
-            'favorite_character'=>$this->favoriteCharacter ? $this->favoriteCharacter->name : null
+            'country'        => $this->whenLoaded('country', function() {
+                return [
+                    'name' => $this->country->name,
+                    'flag' => $this->country->flag_code,
+                ];
+            }),
+
+            'favorite_character' => $this->whenLoaded('favoriteCharacter', function(){
+                return[
+                    'name' => $this->favoriteCharacter?->name,
+                    'avatar' => $this->favoriteCharacter?->avatar,
+                ];
+            }),
+
+           'stats' => [
+    'total_matches'    => $this->total_matches,
+    'wins'             => $this->wins,
+    'loses'            => $this->loses,
+    'gold'             => $this->gold,
+    'gems'             => $this->gems,
+    'necklaces_count'  => $this->necklaces_count ?? 0, 
+    'dice_count'       => $this->dices_count ?? 0, 
+    'characters_count' => $this->characters_count ?? 0,
+],
         ];
     }
 }

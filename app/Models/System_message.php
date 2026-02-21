@@ -10,9 +10,9 @@ class System_message extends Model
     /** @use HasFactory<\Database\Factories\SystemMessageFactory> */
     use HasFactory;
 
-    public function inboxes()
+    public function users()
 {
   
-    return $this->morphMany(Inbox::class, 'inboxable');
+    return $this->belongsToMany(User::class, 'system_message_user', 'system_message_id', 'user_id');
 }
 }

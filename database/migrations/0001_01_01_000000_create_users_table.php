@@ -21,6 +21,8 @@ return new class extends Migration
         $table->string('password')->nullable(); 
   
         $table->integer('current_experience')->default(0); 
+        $table->integer('level')->default(1); 
+
         $table->integer('wins')->default(0); 
         $table->integer('loses')->default(0); 
 
