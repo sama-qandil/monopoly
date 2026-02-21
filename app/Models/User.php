@@ -110,12 +110,6 @@ public function getAvatarUrlAttribute($value)
 
 
 
-    public function tasks()
-    {
-        return $this->belongsToMany(Task::class, 'user_task_progress')
-            ->withPivot('current_progress', 'is_claimed');
-    }
-
     public function claimedRewards()
     {
         return $this->belongsToMany(Reward::class, 'user_reward_claims')
@@ -159,5 +153,30 @@ public function getAvatarUrlAttribute($value)
     public function country()
     {
         return $this->belongsTo(Country::class);
+    }
+
+    public function tasks(){
+        return $this->belongsToMany(Task::class, 'task_user')
+                    ->withPivot('current_count', 'is_completed', 'is_collected')
+                    ->withTimestamps();
+    }
+
+    public function unlockedSlots()
+    {
+        return $this->belongsToMany(Necklaceslot::class, 'user_necklace_slots')
+                    ->withTimestamps();
+    }
+
+
+    public function events()
+    {
+        return $this->belongsToMany(Event::class, 'event_user')
+                    ->withTimestamps();
+    }
+
+    public function quests()
+    {
+        return $this->belongsToMany(Quest::class, 'quest_user')
+                    ->withTimestamps();
     }
 }

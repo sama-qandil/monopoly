@@ -2,65 +2,35 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EquipNecklaceRequest;
 use App\Models\EquippedNecklace;
 use App\Http\Requests\StoreEquippedNecklaceRequest;
 use App\Http\Requests\UpdateEquippedNecklaceRequest;
 
 class EquippedNecklaceController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function equip(EquipNecklaceRequest $request)
+{
+    $validated = $request->validated();
+
+    $user = $request->user();
+
+   
+    if (!$user->necklaces()->where('necklace_id', $validated['necklace_id'])->exists()) {
+        return $this->error(' you do not own this necklace');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+   
+    if (!$user->unlockedSlots()->where('necklace_slot_id', $validated['slot_id'])->exists()) {
+        return $this->error('you must buy this slot first');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreEquippedNecklaceRequest $request)
-    {
-        //
-    }
+   
+    $user->equippedNecklaces()->updateOrCreate(
+        ['necklace_slot_id' => $validated['slot_id']], 
+        ['necklace_id'      => $validated['necklace_id']] 
+    );
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(EquippedNecklace $equippedNecklace)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(EquippedNecklace $equippedNecklace)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEquippedNecklaceRequest $request, EquippedNecklace $equippedNecklace)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(EquippedNecklace $equippedNecklace)
-    {
-        //
-    }
+    return $this->success(null, 'necklace equipped successfully');
+}
 }

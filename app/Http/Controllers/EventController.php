@@ -5,62 +5,51 @@ namespace App\Http\Controllers;
 use App\Models\Event;
 use App\Http\Requests\StoreEventRequest;
 use App\Http\Requests\UpdateEventRequest;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Quest;
 
 class EventController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+   public function getActiveEvents()
     {
-        //
+        $now = Carbon::now();
+
+       
+        $events = Event::with('quests') 
+            ->where('start_date', '<=', $now)
+            ->where('end_date', '>=', $now)
+            ->get();
+
+        return $this->success($events, 'Events retrieved successfully');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function buyPrize(Request $request, $questId)
     {
-        //
-    }
+        $user = $request->user();
+        $quest = Quest::with('event')->findOrFail($questId);
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreEventRequest $request)
-    {
-        //
-    }
+       
+        if (Carbon::now()->gt($quest->event->end_date)) {
+            return $this->error('Sorry, this event has already ended. Better luck next time!');
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Event $event)
-    {
-        //
-    }
+   
+        if ($user->quests()->where('quest_id', $questId)->exists()) {
+            return $this->error('You already have this prize, my friend!');
+        }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Event $event)
-    {
-        //
-    }
+   
+        if ($user->gold < $quest->price) {
+            return $this->error('Your gold is not enough, keep playing to collect 500 pieces!');
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateEventRequest $request, Event $event)
-    {
-        //
-    }
+        DB::transaction(function () use ($user, $quest) {
+            $user->decrement('gold', $quest->price); 
+            $user->quests()->attach($quest->id); 
+        });
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Event $event)
-    {
-        //
+        return $this->success(null, "Congratulations! You've successfully obtained {$quest->prize_name}");
     }
 }

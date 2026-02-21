@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->string('description');
             $table->integer('target_count');
-            $table->integer('earned_points');
+            $table->integer('reward_gold')->default(0); 
+            $table->integer('reward_gems')->default(0);
+            $table->integer('reward_points')->default(0);
             $table->timestamps();
         });
     }

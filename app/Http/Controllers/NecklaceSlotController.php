@@ -2,65 +2,38 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Necklace_slot;
+use App\Models\Necklaceslot;
 use App\Http\Requests\StoreNecklace_slotRequest;
 use App\Http\Requests\UpdateNecklace_slotRequest;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 class NecklaceSlotController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
+    public function buySlot(Request $request, $slotId)
+{
+    $user = $request->user();
+    $slot = NecklaceSlot::findOrFail($slotId);
+
+
+    if ($user->level < $slot->required_level) {
+        return $this->error("you must be level {$slot->required_level} to unlock this slot");
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+  
+    if ($user->unlockedSlots()->where('necklace_slot_id', $slotId)->exists()) {
+        return $this->error('this slot is already unlocked');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreNecklace_slotRequest $request)
-    {
-        //
+    if ($user->gems < $slot->price) {
+        return $this->error('not enough gems');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Necklace_slot $necklace_slot)
-    {
-        //
-    }
+    DB::transaction(function () use ($user, $slot) {
+        $user->decrement('gems', $slot->price);
+        $user->unlockedSlots()->attach($slot->id);
+    });
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Necklace_slot $necklace_slot)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateNecklace_slotRequest $request, Necklace_slot $necklace_slot)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Necklace_slot $necklace_slot)
-    {
-        //
-    }
+    return $this->success(null, 'slot unlocked successfully');
+}
 }
