@@ -38,9 +38,9 @@ class UserResource extends JsonResource
     'loses'            => $this->loses,
     'gold'             => $this->gold,
     'gems'             => $this->gems,
-    'necklaces_count'  => $this->necklaces_count ?? 0, 
-    'dice_count'       => $this->dices_count ?? 0, 
-    'characters_count' => $this->characters_count ?? 0,
+    'necklaces_count'  => $this->necklaces_count , 
+    'dice_count'       => $this->dices_count , 
+    'characters_count' => $this->characters_count ,
 ],
         ];
     }

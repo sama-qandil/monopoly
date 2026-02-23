@@ -9,11 +9,7 @@ use Illuminate\Support\Facades\DB;
 class SystemMessageController extends Controller {
 
 public function index(Request $request) {
-    $messages = $request->user()->systemMessages()
-        ->select('system_messages.*')
-        ->withPivot('is_read')
-        ->latest()
-        ->get();
+    $messages = $request->user()->systemMessages()->latest()->get();
 
     return $this->success($messages, "messages retrieved successfully");
 }
