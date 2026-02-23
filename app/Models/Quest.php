@@ -10,6 +10,7 @@ class Quest extends Model
     /** @use HasFactory<\Database\Factories\RewardFactory> */
     use HasFactory;
 
+    protected $guarded = [];
     public function getAvatarUrlAttribute($value)
 {
 

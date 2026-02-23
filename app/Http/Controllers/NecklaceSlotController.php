@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Necklaceslot;
+use App\Models\NecklaceSlot;
 use App\Http\Requests\StoreNecklace_slotRequest;
 use App\Http\Requests\UpdateNecklace_slotRequest;
 use Illuminate\Support\Facades\DB;

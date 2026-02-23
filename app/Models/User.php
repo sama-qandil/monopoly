@@ -88,33 +88,28 @@ public function getAvatarUrlAttribute($value)
 
     public function dices()
     {
-        return $this->belongsToMany(Dice::class, 'user_dice');
+        return $this->belongsToMany(Dice::class, 'dice_user');
     }
 
     public function gold()
     {
-        return $this->belongsToMany(Gold::class, 'user_gold');
+        return $this->belongsToMany(Gold::class, 'gold_user');
     }
 
 
     public function jewelries()
     {
-        return $this->belongsToMany(Jewelry::class, 'user_jewelry');
+        return $this->belongsToMany(Jewelry::class, 'jewelry_user');
     }
 
 
     public function necklaces()
     {
-        return $this->belongsToMany(Necklace::class, 'user_necklace');
+        return $this->belongsToMany(Necklace::class, 'necklace_user');
     }
 
 
 
-    public function claimedRewards()
-    {
-        return $this->belongsToMany(Reward::class, 'user_reward_claims')
-            ->withTimestamps();
-    }
 
     public function friendInvites()
     {
@@ -123,7 +118,7 @@ public function getAvatarUrlAttribute($value)
 
     public function systemMessages()
     {
-        return $this->hasMany(System_message::class, 'receiver_id');
+        return $this->belongsToMany(System_message::class, 'system_message_user', 'user_id', 'system_message_id');
     }
 
     public function friendMessages()
@@ -163,7 +158,7 @@ public function getAvatarUrlAttribute($value)
 
     public function unlockedSlots()
     {
-        return $this->belongsToMany(Necklaceslot::class, 'user_necklace_slots')
+        return $this->belongsToMany(Necklaceslot::class, 'necklace_slot_users')
                     ->withTimestamps();
     }
 

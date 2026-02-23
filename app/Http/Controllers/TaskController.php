@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Http\Requests\UpdateTaskRequest;
 use Illuminate\Http\Request;
 use App\Http\Resources\TaskResource;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
@@ -16,31 +17,23 @@ class TaskController extends Controller
      */
     public function index(Request $request,$type)
     {
-        $type=match($type){
-            'daily'=>'daily',
-            'weekly'=>'weekly',
-            'champion'=>'champion',
-            default=> null,
-        };
 
-        $tasks=Task::where('type',$type)->with(['users' =>function($query) use ($request){
-            $query->where('user_id',$request->user()->id);
-        }])->get();
+        $tasks = $request->user()->tasks()
+        ->where('tasks.type', $type) 
+        ->get();
         return $this->success(TaskResource::collection($tasks),"Tasks retrieved successfully");
     }
 
     
     public function collect(Request $request , $taskId){
-        $user=$request->user();
+       $user = $request->user();
 
-        $task = Task::with(['users' => function ($query) use ($user) {
-            $query->where('user_id', $user->id);
-        }])->findOrFail($taskId);
+       $task = $user->tasks()->where('tasks.id', $taskId)->firstOrFail();
 
-        $userProgress=$task->users->first();
+        $progress = $task->pivot;
 
-        if(!$userProgress || !$userProgress->pivot->is_completed || !$userProgress->pivot->is_collected){
-            return $this->error(null,'cannot collect reward for this task');
+        if(!$progress || !$progress->is_completed || $progress->is_collected){
+            return $this->error('cannot collect reward for this task', 400);
         }
 
       
@@ -56,7 +49,7 @@ class TaskController extends Controller
             ]);
         });
 
-        return $this->success(null, 'Reward collected successfully');
+        return $this->success('Reward collected successfully',200);
     }
         
     

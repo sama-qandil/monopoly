@@ -10,10 +10,11 @@ class Jewelry extends Model
     /** @use HasFactory<\Database\Factories\JewelryFactory> */
     use HasFactory;
 
+    protected $guarded = [];
 
 
     public function users() {
-    return $this->belongsToMany(User::class, 'user_jewelry', 'jewelry_id', 'user_id');
+    return $this->belongsToMany(User::class, 'jewelry_user', 'jewelry_id', 'user_id');
 }
 }
 

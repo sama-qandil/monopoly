@@ -15,7 +15,8 @@ class UserResource extends JsonResource
     public function toArray(Request $request): array
     {
         return[
-            'name'=>$this->username,
+            'id'=>$this->id,
+            'username'=>$this->username,
             'email'=>$this->email,
             'country'        => $this->whenLoaded('country', function() {
                 return [
@@ -23,7 +24,7 @@ class UserResource extends JsonResource
                     'flag' => $this->country->flag_code,
                 ];
             }),
-
+            'level' => $this->level,
             'favorite_character' => $this->whenLoaded('favoriteCharacter', function(){
                 return[
                     'name' => $this->favoriteCharacter?->name,

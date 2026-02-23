@@ -27,7 +27,7 @@ class NecklaceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreNecklaceRequest $request)
+    public function store( $request)
     {
         //
     }
@@ -51,7 +51,7 @@ class NecklaceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateNecklaceRequest $request, Necklace $necklace)
+    public function update( $request, Necklace $necklace)
     {
         //
     }

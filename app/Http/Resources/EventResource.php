@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class GoldResource extends JsonResource
+class EventResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -14,10 +14,6 @@ class GoldResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return[
-            'id'=>$this->id,
-            'gems_cost'=>$this->gems_cost,
-            'icon'=>$this->icon,
-        ];
+        return parent::toArray($request);
     }
 }

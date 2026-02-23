@@ -10,6 +10,7 @@ class System_message extends Model
     /** @use HasFactory<\Database\Factories\SystemMessageFactory> */
     use HasFactory;
 
+protected $guarded = [];
     public function users()
 {
   

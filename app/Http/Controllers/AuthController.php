@@ -20,7 +20,7 @@ class AuthController extends Controller
     public function deviceLogin(DeviceLoginRequest $request)
     {
         $validated=$request->validated();
-        $user = User::firstOrCreate(['device_id' => $request->$validated['device_id']], [
+        $user = User::firstOrCreate(['device_id' => $validated['device_id']], [
             'username' => 'User' . time(),
         ]);
 
@@ -46,7 +46,7 @@ class AuthController extends Controller
 
         $token = $user->createToken('device_token')->plainTextToken;
         return $this->success([
-            'user'    => new \App\Http\Resources\UserResource($user),
+            'user'    => new UserResource($user),
             'token'   => $token,
         ],'User registered successfully');
     }
@@ -66,7 +66,7 @@ class AuthController extends Controller
             'password'    => Hash::make($validateduser['password']),
             'provider_id' => $validateduser['provider_id'] ?? $user->provider_id
         ]);
-        return $this->success([ 'user' => new \App\Http\Resources\UserResource($user)],'Account linked successfully');
+        return $this->success([ 'user' => new UserResource($user)],'Account linked successfully');
     }
 
 
@@ -82,9 +82,9 @@ class AuthController extends Controller
             return $this->error( 'Invalid credentials', 401);
         }
 
-        $token = $user->createToken('device_token')->plainTextToken;
+        $token = $user->createToken('user_token')->plainTextToken;
         return $this->success([
-             'user' => new \App\Http\Resources\UserResource($user),
+             'user' => new UserResource($user),
             'token'   => $token,
         ],'Logged in successfully');
     }

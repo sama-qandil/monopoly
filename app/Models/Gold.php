@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Gold extends Model
 {
-    /** @use HasFactory<\Database\Factories\GoldFactory> */
-    use HasFactory;
+/** @use HasFactory<\Database\Factories\GoldFactory> */
+use HasFactory;
 
+protected $guarded = [];
 
     public function users() {
-    return $this->belongsToMany(User::class, 'user_gold');
+    return $this->belongsToMany(User::class, 'gold_user');
 }
 
 

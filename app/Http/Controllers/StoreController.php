@@ -2,7 +2,7 @@
 
 // app/Http/Controllers/Api/StoreController.php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\characterResource;
@@ -57,15 +57,15 @@ public function getitemDetails(Request $request, $category, $id) {
 
         
         if ($user->characters()->where('character_id', $id)->exists()) {
-            return $this->error(null,'You already own this character!');
+            return $this->error('You already own this character!',400);
         }
 
         
         $currency=$character-> gold_price > 0  ? 'gold' : 'gems';
-        $price=$character->gold_price > 0 ? $character->gold_price : $character->gem_price; 
+        $price=$character->gold_price > 0 ? $character->gold_price : $character->gems_price; 
 
         if ($user->$currency < $price) {
-            return $this->error(null,'your balance is not enough!');
+            return $this->error('Your balance is not enough!',400);
         }
         
         DB::transaction(function () use ($user, $character, $currency, $price) {
@@ -93,12 +93,12 @@ public function getitemDetails(Request $request, $category, $id) {
 
         
         if ($user->dices()->where('dice_id', $id)->exists()) {
-            return $this->error(null,'You already own this dice!');
+            return $this->error('You already own this dice!',400);
         }
 
         
        if($user->gems < $dice->gems_cost){
-            return $this->error(null,'your balance is not enough!');
+            return $this->error('Your balance is not enough!',400);
         }
       
         
@@ -119,7 +119,7 @@ public function getitemDetails(Request $request, $category, $id) {
         $necklace=Necklace::findOrFail($id);
         
         if ($user->necklaces()->where('necklace_id', $id)->exists()) {
-            return $this->error(null,'You already own this necklace!');
+            return $this->error('You already own this necklace!',400);
         }
 
         
@@ -127,7 +127,7 @@ public function getitemDetails(Request $request, $category, $id) {
         $price=$necklace->gold_cost > 0 ? $necklace->gold_cost : $necklace->gems_cost; 
 
         if ($user->$currency < $price) {
-            return $this->error(null,'your balance is not enough!');
+            return $this->error('Your balance is not enough!',400);
         }
         
         DB::transaction(function () use ($user, $necklace, $currency, $price) {
@@ -148,11 +148,11 @@ public function getitemDetails(Request $request, $category, $id) {
         $gold=Gold::findOrFail($id);
 
         if($user->gold()->where('gold_id', $id)->exists()) {
-            return $this->error(null,'You already own this gold package!');
+            return $this->error('You already own this gold package!',400);
         }
 
-        if($user->gems < $gold->price){
-            return $this->error(null,'your balance is not enough!');
+        if($user->gems < $gold->gems_cost){
+            return $this->error('Your balance is not enough!',400);
         }
 
         DB::transaction(function () use ($user, $gold) {
