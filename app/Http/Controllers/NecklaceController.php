@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Necklace;
-use App\Http\Requests\StoreNecklaceRequest;
-use App\Http\Requests\UpdateNecklaceRequest;
 
 class NecklaceController extends Controller
 {
@@ -27,7 +25,7 @@ class NecklaceController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store( $request)
+    public function store($request)
     {
         //
     }
@@ -51,7 +49,7 @@ class NecklaceController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update( $request, Necklace $necklace)
+    public function update($request, Necklace $necklace)
     {
         //
     }

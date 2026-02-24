@@ -8,9 +8,10 @@ use Laravel\Sanctum\HasApiTokens;
 
 class NecklaceSlotUser extends Model
 {
-    /** @use HasFactory<\Database\Factories\NecklaceSlotUserFactory> */
-    use HasFactory;
     use HasApiTokens;
 
-protected $guarded = [];
+    /** @use HasFactory<\Database\Factories\NecklaceSlotUserFactory> */
+    use HasFactory;
+
+    protected $guarded = [];
 }

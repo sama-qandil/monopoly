@@ -8,11 +8,13 @@ use Laravel\Sanctum\HasApiTokens;
 
 class EquippedNecklace extends Model
 {
-    /** @use HasFactory<\Database\Factories\EquippedNecklaceFactory> */
-    use HasFactory;
     use HasApiTokens;
 
-protected $guarded = [];
+    /** @use HasFactory<\Database\Factories\EquippedNecklaceFactory> */
+    use HasFactory;
+
+    protected $guarded = [];
+    // TODO: missing fillable
 
     public function user()
     {

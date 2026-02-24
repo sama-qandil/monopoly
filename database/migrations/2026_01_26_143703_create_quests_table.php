@@ -20,15 +20,12 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
-
-
         Schema::create('quest_user', function (Blueprint $table) {
-    $table->id();
-    $table->foreignId('user_id')->constrained()->onDelete('cascade');
-    $table->foreignId('quest_id')->constrained()->onDelete('cascade');
-    $table->timestamps();
-});
+            $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('quest_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
+        });
     }
 
     /**

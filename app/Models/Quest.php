@@ -11,17 +11,14 @@ class Quest extends Model
     use HasFactory;
 
     protected $guarded = [];
+
+    // TODO: missing fillable
+
     public function getAvatarUrlAttribute($value)
-{
+    {
 
-    return $value ? asset('storage/quests/' . $value) : asset('images/default_quest.png');
-}
-
-
-
-
-
-
+        return $value ? asset('storage/quests/'.$value) : asset('images/default_quest.png');
+    }
 
     public function event()
     {
@@ -31,6 +28,6 @@ class Quest extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'quest_user')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 }

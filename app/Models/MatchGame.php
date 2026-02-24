@@ -12,9 +12,9 @@ class MatchGame extends Model
 
     protected $guarded = [];
 
-   
-public function players() {
-    return $this->belongsToMany(User::class, 'matchh_user')
-                ->withPivot('gold_gained', 'gems_gained', 'rank', 'wins', 'loss', 'experience_gained');
-}
+    public function players()
+    {
+        return $this->belongsToMany(User::class, 'matchh_user')
+            ->withPivot('gold_gained', 'gems_gained', 'rank', 'wins', 'loss', 'experience_gained');
+    }
 }

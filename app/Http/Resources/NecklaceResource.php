@@ -14,16 +14,16 @@ class NecklaceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return[
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'description'=>$this->description,
-            'classification'=>$this->classification,
-            'gold_cost'=>$this->gold_cost,
-            'gems_cost'=>$this->gems_cost,
-            'icon_url'=>$this->icon,
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'classification' => $this->classification,
+            'gold_cost' => $this->gold_cost,
+            'gems_cost' => $this->gems_cost,
+            'icon_url' => $this->icon,
 
         ];
-        
+
     }
 }

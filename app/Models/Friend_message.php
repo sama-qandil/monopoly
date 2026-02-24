@@ -8,14 +8,16 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Friend_message extends Model
 {
-    /** @use HasFactory<\Database\Factories\FriendMessagesFactory> */
-    use HasFactory;
     use HasApiTokens;
 
-protected $guarded = [];
+    /** @use HasFactory<\Database\Factories\FriendMessagesFactory> */
+    use HasFactory;
+
+    protected $guarded = [];
+
     public function inboxes()
-{
- 
-    return $this->morphMany(Inbox::class, 'inboxable');
-}
+    {
+
+        return $this->morphMany(Inbox::class, 'inboxable');
+    }
 }

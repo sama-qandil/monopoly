@@ -9,12 +9,13 @@ use Laravel\Sanctum\HasApiTokens;
 class Character extends Model
 {
     /** @use HasFactory<\Database\Factories\CharacterFactory> */
-    use HasFactory,HasApiTokens;
+    use HasApiTokens,HasFactory;
 
-protected $guarded = [];
+    protected $guarded = [];
 
-    public function users() {
-    return $this->belongsToMany(User::class, )
-                ->withPivot('current_level', 'current_experience', 'is_selected');
-}
+    public function users()
+    {
+        return $this->belongsToMany(User::class)
+            ->withPivot('current_level', 'current_experience', 'is_selected');
+    }
 }

@@ -11,8 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-         Schema::create('characters', function (Blueprint $table) {
-         $table->id();
+        Schema::create('characters', function (Blueprint $table) {
+            $table->id();
             $table->string('name');
             $table->string('gender');
             $table->string('category');
@@ -21,8 +21,8 @@ return new class extends Migration
             $table->string('avatar');
             $table->integer('gold_price');
             $table->integer('gems_price');
-    }
-    );
+        }
+        );
     }
 
     /**

@@ -14,13 +14,12 @@ class DiceResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return[
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'description'=>$this->description,
-            'gems_cost'=>$this->gems_cost,
-            'icon'=>$this->icon,
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'description' => $this->description,
+            'gems_cost' => $this->gems_cost,
+            'icon' => $this->icon,
         ];
-}
-
+    }
 }

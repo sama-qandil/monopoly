@@ -18,22 +18,12 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        \App\Models\User::factory()->create([
-        'name' => 'Sama',
-        'email' => 'sama@example.com',
-        'password' => Hash::make('password123'), 
-        'gold' => 5000,
-        'gems' => 1000,
-    ]);
-            //TODO: default password missing  
-        
+        User::factory()->create([
+            'name' => 'Test User',
+            'email' => 'test@example.com',
+            // TODO: default password missing
+        ]);
 
-        //TODO: configure the needed seeders for (initial / test) models
-
-        $this->call([
-        CharacterSeeder::class,
-        DiceSeeder::class,
-        NecklaceSeeder::class,
-    ]);
+        // TODO: configure the needed seeders for (initial / test) models
     }
 }

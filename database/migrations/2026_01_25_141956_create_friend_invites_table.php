@@ -13,15 +13,15 @@ return new class extends Migration
     {
         Schema::create('friend_invites', function (Blueprint $table) {
 
-        $table->id();
-        $table->foreignIdFor(App\Models\User::class, 'sender_id');
-        $table->foreignIdFor(App\Models\User::class, 'receiver_id');
-        
-        $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
-        
-        $table->timestamp('delivered_at')->nullable();
-        
-        $table->timestamps();
+            $table->id();
+            $table->foreignIdFor(App\Models\User::class, 'sender_id');
+            $table->foreignIdFor(App\Models\User::class, 'receiver_id');
+
+            $table->enum('status', ['pending', 'accepted', 'declined'])->default('pending');
+
+            $table->timestamp('delivered_at')->nullable();
+
+            $table->timestamps();
         });
     }
 
