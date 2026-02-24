@@ -22,8 +22,8 @@ class EquipNecklaceRequest extends FormRequest
     public function rules(): array
     {
         return [
-           'slot_id'     => 'required|exists:necklace_slots,id',
-        'necklace_id' => 'required|exists:necklaces,id',
+            'slot_id' => 'required|exists:necklace_slots,id',
+            'necklace_id' => 'required|exists:necklaces,id',
         ];
     }
 }

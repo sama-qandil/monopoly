@@ -3,26 +3,23 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use App\Models\GeneralCharacter;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasApiTokens;
+    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
-
-    protected $guarded = [];
+    protected $guarded = []; // TODO: better use fillable
 
     protected $attributes = [
         'gold' => '0',
@@ -32,23 +29,21 @@ class User extends Authenticatable
         'loses' => '0',
     ];
 
-
+    // ============================================================ //
+    // TODO: use only one way to write accessors and attributes
     public function totalMatches(): Attribute
     {
         return Attribute::make(
-            get: fn() => $this->wins + $this->loses,
+            get: fn () => $this->wins + $this->loses,
         );
     }
 
-    
+    public function getAvatarUrlAttribute($value)
+    {
 
-
-
-public function getAvatarUrlAttribute($value)
-{
-
-    return $value ? asset('storage/users/' . $value) : asset('images/default_user.png');
-}
+        return $value ? asset('storage/users/'.$value) : asset('images/default_user.png');
+    }
+    // ============================================================ //
 
     protected $appends = ['avatar_url'];
 
@@ -75,14 +70,9 @@ public function getAvatarUrlAttribute($value)
         ];
     }
 
-
-
-
-
-
     public function characters()
     {
-        return $this->belongsToMany(Character::class,)
+        return $this->belongsToMany(Character::class)
             ->withPivot('current_level', 'current_experience', 'is_selected');
     }
 
@@ -96,12 +86,10 @@ public function getAvatarUrlAttribute($value)
         return $this->belongsToMany(Gold::class, 'gold_user');
     }
 
-
     public function jewelries()
     {
         return $this->belongsToMany(Jewelry::class, 'jewelry_user');
     }
-
 
     public function necklaces()
     {
@@ -136,8 +124,6 @@ public function getAvatarUrlAttribute($value)
         return $this->hasMany(EquippedNecklace::class);
     }
 
-
-
     public function matches()
     {
         return $this->belongsToMany(MatchGame::class, 'match_user', 'user_id', 'match_id')
@@ -150,10 +136,11 @@ public function getAvatarUrlAttribute($value)
         return $this->belongsTo(Country::class);
     }
 
-    public function tasks(){
+    public function tasks()
+    {
         return $this->belongsToMany(Task::class, 'task_user')
-                    ->withPivot('current_count', 'is_completed', 'is_collected')
-                    ->withTimestamps();
+            ->withPivot('current_count', 'is_completed', 'is_collected')
+            ->withTimestamps();
     }
 
     public function unlockedSlots()
@@ -162,16 +149,15 @@ public function getAvatarUrlAttribute($value)
                     ->withTimestamps();
     }
 
-
     public function events()
     {
         return $this->belongsToMany(Event::class, 'event_user')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function quests()
     {
         return $this->belongsToMany(Quest::class, 'quest_user')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 }

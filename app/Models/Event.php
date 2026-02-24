@@ -14,7 +14,9 @@ class Event extends Model
     use HasApiTokens;
 
 protected $guarded = [];
-     public function quests()
+    // TODO: missing fillable
+
+    public function quests()
     {
         return $this->hasMany(Quest::class);
     }
@@ -22,6 +24,6 @@ protected $guarded = [];
     public function users()
     {
         return $this->belongsToMany(User::class, 'event_user')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 }

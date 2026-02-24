@@ -12,9 +12,10 @@ class Task extends Model
     use HasFactory, HasApiTokens;
 
     protected $guarded = [];
+      // TODO: missing fillable
     public function users(){
         return $this->belongsToMany(User::class, 'task_user')
-                    ->withPivot('current_count', 'is_completed', 'is_collected')
-                    ->withTimestamps();
+            ->withPivot('current_count', 'is_completed', 'is_collected')
+            ->withTimestamps();
     }
 }

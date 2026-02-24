@@ -13,9 +13,10 @@ use HasFactory;
 use HasApiTokens;
 
 protected $guarded = [];
+    // TODO: missing fillable
+
     public function inboxes()
-{
-  
-    return $this->hasMany(User::class);
-}
+    {
+        return $this->hasMany(User::class);
+    }
 }

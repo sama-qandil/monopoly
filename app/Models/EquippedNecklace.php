@@ -13,6 +13,7 @@ class EquippedNecklace extends Model
     use HasApiTokens;
 
 protected $guarded = [];
+    // TODO: missing fillable
 
     public function user()
     {

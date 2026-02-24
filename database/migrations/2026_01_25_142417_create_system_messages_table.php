@@ -19,6 +19,7 @@ return new class extends Migration
             $table->timestamps();
         });
 
+        // TODO: never add changes to commited migrations, using migrate fresh is not a good practice in production
         schema::create('system_message_user', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
