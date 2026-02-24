@@ -8,23 +8,25 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Inbox extends Model
 {
-    /** @use HasFactory<\Database\Factories\InboxFactory> */
-    use HasFactory;
     use HasApiTokens;
 
-protected $guarded = [];
+    /** @use HasFactory<\Database\Factories\InboxFactory> */
+    use HasFactory;
 
-    public function inboxable(){
+    protected $guarded = [];
+
+    public function inboxable()
+    {
         return $this->morphTo();
     }
 
+    public function friendMessage()
+    {
+        return $this->belongsTo(Friend_message::class, 'id', 'id');
+    }
 
-public function friendMessage() {
-    return $this->belongsTo(Friend_message::class, 'id', 'id');
-}
-
-public function invite() {
-    return $this->belongsTo(Friend_invite::class, 'id', 'id');
-}
-
+    public function invite()
+    {
+        return $this->belongsTo(Friend_invite::class, 'id', 'id');
+    }
 }

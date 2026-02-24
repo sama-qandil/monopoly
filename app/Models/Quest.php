@@ -11,14 +11,6 @@ class Quest extends Model
     use HasFactory;
 
     protected $guarded = [];
-    public function getAvatarUrlAttribute($value)
-{
-
-    return $value ? asset('storage/quests/' . $value) : asset('images/default_quest.png');
-}
-
-
-
 
     // TODO: missing fillable
 

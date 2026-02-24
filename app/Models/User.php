@@ -96,9 +96,6 @@ class User extends Authenticatable
         return $this->belongsToMany(Necklace::class, 'necklace_user');
     }
 
-
-
-
     public function friendInvites()
     {
         return $this->hasMany(Friend_invite::class, 'receiver_id');
@@ -146,7 +143,7 @@ class User extends Authenticatable
     public function unlockedSlots()
     {
         return $this->belongsToMany(Necklaceslot::class, 'necklace_slot_users')
-                    ->withTimestamps();
+            ->withTimestamps();
     }
 
     public function events()

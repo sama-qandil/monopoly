@@ -20,9 +20,9 @@ class DatabaseSeeder extends Seeder
         User::factory()->create([
             'name' => 'Test User',
             'email' => 'test@example.com',
-            //TODO: default password missing  
+            // TODO: default password missing
         ]);
 
-        //TODO: configure the needed seeders for (initial / test) models
+        // TODO: configure the needed seeders for (initial / test) models
     }
 }

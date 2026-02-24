@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\Friend_invite;
+use Illuminate\Http\Request;
 
 class FriendInviteController extends Controller
 {
@@ -17,13 +18,13 @@ class FriendInviteController extends Controller
             'status' => 'pending',
         ]);
 
-        return $this->success($invite, "Friend invite sent successfully");
+        return $this->success($invite, 'Friend invite sent successfully');
     }
 
     public function Acceptinvite(Request $request, $senderId)
     {
         $user = $request->user();
-        
+
         $invite = Friend_invite::where('receiver_id', $user->id)
             ->where('sender_id', $senderId)
             ->where('status', 'pending')
@@ -31,16 +32,17 @@ class FriendInviteController extends Controller
 
         if ($invite) {
             $invite->update(['status' => 'accepted']);
-            return $this->success($invite, "Friend invite accepted successfully");
+
+            return $this->success($invite, 'Friend invite accepted successfully');
         }
 
-        return $this->error(null, "Friend invite not found");
+        return $this->error(null, 'Friend invite not found');
     }
 
     public function Declineinvite(Request $request, $senderId)
     {
         $user = $request->user();
-        
+
         $invite = Friend_invite::where('receiver_id', $user->id)
             ->where('sender_id', $senderId)
             ->where('status', 'pending')
@@ -48,9 +50,10 @@ class FriendInviteController extends Controller
 
         if ($invite) {
             $invite->update(['status' => 'declined']);
-            return $this->success($invite, "Friend invite declined successfully");
+
+            return $this->success($invite, 'Friend invite declined successfully');
         }
 
-        return $this->error(null, "Friend invite not found");
+        return $this->error(null, 'Friend invite not found');
     }
 }

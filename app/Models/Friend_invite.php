@@ -8,11 +8,12 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Friend_invite extends Model
 {
-/** @use HasFactory<\Database\Factories\FriendInviteFactory> */
-use HasFactory;
-use HasApiTokens;
+    use HasApiTokens;
 
-protected $guarded = [];
+    /** @use HasFactory<\Database\Factories\FriendInviteFactory> */
+    use HasFactory;
+
+    protected $guarded = [];
     // TODO: missing fillable
 
     public function inboxes()

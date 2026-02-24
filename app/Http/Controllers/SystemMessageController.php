@@ -9,13 +9,12 @@ class SystemMessageController extends Controller
     public function index(Request $request)
     {
         $messages = $request->user()->systemMessages()
-            ->select('system_messages.*') // TODO: no need for this select, this is the default bahvior
             ->withPivot('is_read')
             ->latest()
             ->get();
 
-public function index(Request $request) {
-    $messages = $request->user()->systemMessages()->latest()->get();
+        return $this->success($messages, 'Messages retrieved successfully'); // TODO: use resource
+    }
 
     public function markAsRead(Request $request, $id)
     {

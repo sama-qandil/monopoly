@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
-use App\Http\Resources\TaskResource;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
@@ -18,20 +16,21 @@ class TaskController extends Controller
     {
 
         $tasks = $request->user()->tasks()
-        ->where('tasks.type', $type) // TODO: better use ->where('type', $type), no need for tasks.type
-        ->get();
-        return $this->success(TaskResource::collection($tasks),"Tasks retrieved successfully");
+            ->where('tasks.type', $type) // TODO: better use ->where('type', $type), no need for tasks.type
+            ->get();
+
+        return $this->success(TaskResource::collection($tasks), 'Tasks retrieved successfully');
     }
 
-    
-    public function collect(Request $request , $taskId){
-       $user = $request->user();
+    public function collect(Request $request, $taskId) // TODO: Search on Model Binding in laravel
+    {
+        $user = $request->user();
 
-       $task = $user->tasks()->where('tasks.id', $taskId)->firstOrFail();
+        $task = $user->tasks()->where('tasks.id', $taskId)->firstOrFail();
 
         $progress = $task->pivot;
 
-        if(!$progress || !$progress->is_completed || $progress->is_collected){
+        if (! $progress || ! $progress->is_completed || $progress->is_collected) {
             return $this->error('cannot collect reward for this task', 400);
         }
 
@@ -39,14 +38,14 @@ class TaskController extends Controller
 
             $user->increment('gold', $task->reward_gold);
             $user->increment('gems', $task->reward_gems);
-            $user->increment('current_experience', $task->reward_points); // TODO: handle level up logic
+            $user->increment('current_experience', $task->reward_points);
 
             $user->tasks()->updateExistingPivot($task->id, [
                 'is_collected' => true,
             ]);
         });
 
-        return $this->success('Reward collected successfully',200);
+        return $this->success('Reward collected successfully', 200);
     }
 
     /**

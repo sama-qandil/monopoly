@@ -14,15 +14,15 @@ class characterResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return[
-            'id'=>$this->id,
-            'name'=>$this->name,
-            'gender'=>$this->gender,
-            'category'=>$this->category,
-            'ability'=>$this->ability,
-            'avatar'=>$this->avatar,    
-            'gold_price'=>$this->gold_price,
-            'gems_price'=>$this->gems_price,
+        return [
+            'id' => $this->id,
+            'name' => $this->name,
+            'gender' => $this->gender,
+            'category' => $this->category,
+            'ability' => $this->ability,
+            'avatar' => $this->avatar,
+            'gold_price' => $this->gold_price,
+            'gems_price' => $this->gems_price,
         ];
     }
 }

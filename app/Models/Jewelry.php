@@ -12,9 +12,8 @@ class Jewelry extends Model
 
     protected $guarded = [];
 
-
-    public function users() {
-    return $this->belongsToMany(User::class, 'jewelry_user', 'jewelry_id', 'user_id');
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'jewelry_user', 'jewelry_id', 'user_id');
+    }
 }
-}
-

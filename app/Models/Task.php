@@ -9,11 +9,13 @@ use Laravel\Sanctum\HasApiTokens;
 class Task extends Model
 {
     /** @use HasFactory<\Database\Factories\TaskFactory> */
-    use HasFactory, HasApiTokens;
+    use HasApiTokens, HasFactory;
 
     protected $guarded = [];
-      // TODO: missing fillable
-    public function users(){
+
+    // TODO: missing fillable
+    public function users()
+    {
         return $this->belongsToMany(User::class, 'task_user')
             ->withPivot('current_count', 'is_completed', 'is_collected')
             ->withTimestamps();

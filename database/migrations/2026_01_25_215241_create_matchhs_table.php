@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\Character;
+use App\Models\MatchGame;
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\MatchGame;
-use App\Models\User;
-use App\Models\Character;
 
 return new class extends Migration
 {
@@ -21,9 +21,6 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
-
-
         Schema::create('matchGame_user', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(MatchGame::class);
@@ -35,9 +32,6 @@ return new class extends Migration
             $table->integer('rank');
 
             $table->integer('experience_gained');
-
-            
-
 
             $table->timestamps();
         });

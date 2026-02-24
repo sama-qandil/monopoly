@@ -8,9 +8,10 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Necklaceslot extends Model // TODO: wrong name for the model, it should be NecklaceSlot
 {
+    use HasApiTokens;
+
     /** @use HasFactory<\Database\Factories\NecklaceSlotFactory> */
     use HasFactory;
-    use HasApiTokens;
 
     // TODO: missing fillable
 

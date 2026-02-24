@@ -21,6 +21,8 @@ Route::post('/device-login', [AuthController::class, 'deviceLogin']);
 //     });
 // });
 
+// TODO: group all middleware('auth:sanctum') under one group
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
@@ -33,6 +35,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::prefix('store')->group(function () {
 
+        // TODO: NEVER use (App\Http\Controllers\StoreController) import namespace and use StoreController directly
         Route::get('/category/{category}', [App\Http\Controllers\StoreController::class, 'getitemByCategory']);
         Route::get('/item/{category}/{id}', [App\Http\Controllers\StoreController::class, 'getitemDetails']);
 

@@ -1,9 +1,9 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use App\Models\User;
 
 return new class extends Migration
 {
@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
             $table->integer('slot_number');
             $table->foreignId('user_necklace_id')->constrained('necklace_user')->onDelete('cascade');
-            $table->timestamps();                                      
+            $table->timestamps();
         });
     }
 

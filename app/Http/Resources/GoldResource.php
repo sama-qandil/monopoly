@@ -14,10 +14,10 @@ class GoldResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return[
-            'id'=>$this->id,
-            'gems_cost'=>$this->gems_cost,
-            'icon'=>$this->icon,
+        return [
+            'id' => $this->id,
+            'gems_cost' => $this->gems_cost,
+            'icon' => $this->icon,
         ];
     }
 }
