@@ -10,6 +10,7 @@ class System_message extends Model // TODO: wrong naming for the model
     /** @use HasFactory<\Database\Factories\SystemMessageFactory> */
     use HasFactory;
 
+protected $guarded = [];
     // TODO: missing fillable
 
     public function users()

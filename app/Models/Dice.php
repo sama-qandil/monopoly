@@ -3,16 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Laravel\Sanctum\HasApiTokens;
 
 class Dice extends Model
 {
     // TODO: missing fillable
 
-    public function getIconUrlAttribute($value)
-    {
+use HasApiTokens;
 
-        return $value ? asset('storage/dices/'.$value) : asset('images/default_dice.png');
-    }
+protected $guarded = [];
 
     protected $appends = ['icon_url'];
 

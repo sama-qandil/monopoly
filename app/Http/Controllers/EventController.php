@@ -42,7 +42,7 @@ class EventController extends Controller
 
    
         if ($user->gold < $quest->price) {
-            return $this->error('Your gold is not enough, keep playing to collect 500 pieces!');
+            return $this->error('Your gold is not enough!');
         }
 
         DB::transaction(function () use ($user, $quest) {

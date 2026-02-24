@@ -4,10 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Casts\Attribute;
+use Laravel\Sanctum\HasApiTokens;
 
 
 class Country extends Model
 {
+
+use HasApiTokens;
+
+protected $guarded = [];
  
 protected function flagUrl(): Attribute
 {

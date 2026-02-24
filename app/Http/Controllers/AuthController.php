@@ -45,9 +45,9 @@ class AuthController extends Controller
         $token = $user->createToken('device_token')->plainTextToken;
 
         return $this->success([
-            'user' => new \App\Http\Resources\UserResource($user),
-            'token' => $token,
-        ], 'User registered successfully');
+            'user'    => new UserResource($user),
+            'token'   => $token,
+        ],'User registered successfully');
     }
 
     public function LinkAccount(LinkAccountRequest $request)
@@ -64,6 +64,11 @@ class AuthController extends Controller
             'password' => Hash::make($validateduser['password']),
             'provider_id' => $validateduser['provider_id'] ?? $user->provider_id,
         ]);
+        return $this->success([ 'user' => new UserResource($user)],'Account linked successfully');
+    }
+
+
+
 
         return $this->success(['user' => new \App\Http\Resources\UserResource($user)], 'Account linked successfully');
     }
@@ -77,12 +82,11 @@ class AuthController extends Controller
             return $this->error('Invalid credentials', 401);
         }
 
-        $token = $user->createToken('device_token')->plainTextToken;
-
+        $token = $user->createToken('user_token')->plainTextToken;
         return $this->success([
-            'user' => new \App\Http\Resources\UserResource($user),
-            'token' => $token,
-        ], 'Logged in successfully');
+             'user' => new UserResource($user),
+            'token'   => $token,
+        ],'Logged in successfully');
     }
 
     public function logout(Request $request)

@@ -10,6 +10,7 @@ class MatchGame extends Model
     /** @use HasFactory<\Database\Factories\MatchFactory> */
     use HasFactory;
 
+    protected $guarded = [];
 
    
 public function players() {

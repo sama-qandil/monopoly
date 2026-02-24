@@ -14,8 +14,8 @@ class SystemMessageController extends Controller
             ->latest()
             ->get();
 
-        return $this->success($messages, 'messages retrieved successfully');
-    }
+public function index(Request $request) {
+    $messages = $request->user()->systemMessages()->latest()->get();
 
     public function markAsRead(Request $request, $id)
     {

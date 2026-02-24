@@ -11,7 +11,7 @@ class LoginRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false; // TODO: this will always fail, fix it
+        return true;
     }
 
     /**
