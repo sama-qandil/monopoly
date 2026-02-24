@@ -114,6 +114,6 @@ public function logout(Request $request){
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
-        return $this->success(['token' => $token, 'user'    => new \App\Http\Resources\UserResource($user),]);
+        return $this->success(['token' => $token, 'user'    => new UserResource($user),]);
     }
 }

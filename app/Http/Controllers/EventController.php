@@ -13,7 +13,7 @@ use App\Models\Quest;
 class EventController extends Controller
 {
    public function getActiveEvents()
-    {
+    { 
         $now = Carbon::now();
 
        

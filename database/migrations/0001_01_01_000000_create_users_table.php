@@ -30,7 +30,7 @@ return new class extends Migration
         $table->integer('gold')->default(0);
         $table->integer('gems')->default(0);
         
-        $table->string('avatar')->default('default.png'); //remove db default and handle it in the model accessor (HINT: avatar_url)
+        $table->string('avatar')->nullable(); //remove db default and handle it in the model accessor (HINT: avatar_url)
         
         $table->integer('fav_character_id')->nullable();
 

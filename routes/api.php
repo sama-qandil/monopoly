@@ -49,7 +49,7 @@ Route::middleware('auth:sanctum')->group(function () {
             Route::post('/dice/{id}', [App\Http\Controllers\StoreController::class, 'buyDice']);
             Route::post('/necklace/{id}', [App\Http\Controllers\StoreController::class, 'buyNecklaces']);
             Route::post('/gold/{id}', [App\Http\Controllers\StoreController::class, 'buyGold']);
-            Route::post('/jewelry/{id}', [App\Http\Controllers\StoreController::class, 'buyJewelry']);
+            // Route::post('/jewelry/{id}', [App\Http\Controllers\StoreController::class, 'buyJewelry']);
         });
     });
 });
