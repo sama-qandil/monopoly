@@ -3,32 +3,21 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class Dice extends Model
 {
+    // TODO: missing fillable
 
+    public function getIconUrlAttribute($value)
+    {
 
+        return $value ? asset('storage/dices/'.$value) : asset('images/default_dice.png');
+    }
 
-public function getIconUrlAttribute($value)
-{
+    protected $appends = ['icon_url'];
 
-    return $value ? asset('storage/dices/' . $value) : asset('images/default_dice.png');
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
-
-protected $appends = ['icon_url'];
-
-
-
-
-
-
-
-    public function users() {
-    return $this->belongsToMany(User::class, );
-}
-
-
-
-}
-

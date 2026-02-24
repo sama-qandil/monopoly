@@ -10,6 +10,7 @@ class EquippedNecklace extends Model
     /** @use HasFactory<\Database\Factories\EquippedNecklaceFactory> */
     use HasFactory;
 
+    // TODO: missing fillable
 
     public function user()
     {

@@ -2,11 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Task;
-use App\Http\Requests\StoreTaskRequest;
-use App\Http\Requests\UpdateTaskRequest;
-use Illuminate\Http\Request;
 use App\Http\Resources\TaskResource;
+use App\Models\Task;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class TaskController extends Controller
@@ -14,53 +12,52 @@ class TaskController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request,$type)
+    public function index(Request $request, $type)
     {
-        $type=match($type){
-            'daily'=>'daily',
-            'weekly'=>'weekly',
-            'champion'=>'champion',
-            default=> null,
+        // TODO: the right way is to make TaskEnum and use it here
+        $type = match ($type) {
+            'daily' => 'daily',
+            'weekly' => 'weekly',
+            'champion' => 'champion',
+            default => null,
         };
 
-        $tasks=Task::where('type',$type)->with(['users' =>function($query) use ($request){
-            $query->where('user_id',$request->user()->id);
+        // TODO: get user tasks by getting user instance and use his tasks() relation
+        $tasks = Task::where('type', $type)->with(['users' => function ($query) use ($request) {
+            $query->where('user_id', $request->user()->id);
         }])->get();
-        return $this->success(TaskResource::collection($tasks),"Tasks retrieved successfully");
+
+        return $this->success(TaskResource::collection($tasks), 'Tasks retrieved successfully');
     }
 
-    
-    public function collect(Request $request , $taskId){
-        $user=$request->user();
+    public function collect(Request $request, $taskId)
+    {
+        $user = $request->user();
 
+        // TODO: get user tasks by getting user instance and use his tasks() relation
         $task = Task::with(['users' => function ($query) use ($user) {
             $query->where('user_id', $user->id);
         }])->findOrFail($taskId);
 
-        $userProgress=$task->users->first();
+        $userProgress = $task->users->first();
 
-        if(!$userProgress || !$userProgress->pivot->is_completed || !$userProgress->pivot->is_collected){
-            return $this->error(null,'cannot collect reward for this task');
+        if (! $userProgress || ! $userProgress->pivot->is_completed || ! $userProgress->pivot->is_collected) {
+            return $this->error(null, 'cannot collect reward for this task');
         }
 
-      
         DB::transaction(function () use ($user, $task) {
-           
+
             $user->increment('gold', $task->reward_gold);
             $user->increment('gems', $task->reward_gems);
-            $user->increment('current_experience', $task->reward_points);
+            $user->increment('current_experience', $task->reward_points); // TODO: handle level up logic
 
-         
             $user->tasks()->updateExistingPivot($task->id, [
-                'is_collected' => true
+                'is_collected' => true,
             ]);
         });
 
         return $this->success(null, 'Reward collected successfully');
     }
-        
-    
-    
 
     /**
      * Store a newly created resource in storage.
@@ -85,7 +82,6 @@ class TaskController extends Controller
     /**
      * Update the specified resource in storage.
      */
-  
 
     /**
      * Remove the specified resource from storage.
