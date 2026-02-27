@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 
-class Necklaceslot extends Model // TODO: wrong name for the model, it should be NecklaceSlot
+class NecklaceSlot extends Model // TODO: wrong name for the model, it should be NecklaceSlot
 {
     use HasApiTokens;
 
@@ -14,10 +14,11 @@ class Necklaceslot extends Model // TODO: wrong name for the model, it should be
     use HasFactory;
 
     // TODO: missing fillable
+    protected $fillable = ['name', 'description', 'gold_cost', 'gems_cost', 'icon','classification'];
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_necklace_slot')
+        return $this->belongsToMany(User::class, 'necklace_slot_users')
             ->withTimestamps();
     }
 }

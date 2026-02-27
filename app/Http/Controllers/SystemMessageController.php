@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SystemMessageResource;
 use Illuminate\Http\Request;
 
 class SystemMessageController extends Controller
@@ -13,7 +14,7 @@ class SystemMessageController extends Controller
             ->latest()
             ->get();
 
-        return $this->success($messages, 'Messages retrieved successfully'); // TODO: use resource
+        return $this->success(['message'=>new SystemMessageResource($messages), 'Messages retrieved successfully']); // TODO: use resource
     }
 
     public function markAsRead(Request $request, $id)

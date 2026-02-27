@@ -19,7 +19,8 @@ class User extends Authenticatable
      *
      * @var list<string>
      */
-    protected $guarded = []; // TODO: better use fillable
+    protected $fillable  = ['username', 'email', 'password', 'device_id', 'gold', 'gems', 'avatar','level',
+    'wins', 'loses','current_experience','fav_character_id']; // TODO: better use fillable
 
     protected $attributes = [
         'gold' => '0',
@@ -39,13 +40,13 @@ class User extends Authenticatable
     }
 
     
-
-
-
-public function getAvatarUrlAttribute($value)
+public function avatarUrl(): Attribute
 {
-
-    return $value ? asset('storage/users/' . $value) : asset('images/default_user.png');
+    return Attribute::make(
+        get: fn () => $this->avatar 
+            ? asset('storage/users/' . $this->avatar) 
+            : asset('images/default_user.png'),
+    );
 }
 
 
@@ -107,12 +108,12 @@ public function getAvatarUrlAttribute($value)
 
     public function systemMessages()
     {
-        return $this->belongsToMany(System_message::class, 'system_message_user', 'user_id', 'system_message_id');
+        return $this->belongsToMany(SystemMessage::class, 'system_message_user', 'user_id', 'system_message_id');
     }
 
     public function friendMessages()
     {
-        return $this->hasMany(Friend_message::class, 'receiver_id');
+        return $this->hasMany(FriendMessage::class, 'receiver_id');
     }
 
     public function favoriteCharacter()
@@ -146,7 +147,7 @@ public function getAvatarUrlAttribute($value)
 
     public function unlockedSlots()
     {
-        return $this->belongsToMany(Necklaceslot::class, 'necklace_slot_users')
+        return $this->belongsToMany(NecklaceSlot::class, 'necklace_slot_users')
             ->withTimestamps();
     }
 

@@ -13,7 +13,7 @@ class EquippedNecklace extends Model
     /** @use HasFactory<\Database\Factories\EquippedNecklaceFactory> */
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['user_id','slot_number','user_necklace_id'];
     // TODO: missing fillable
 
     public function user()

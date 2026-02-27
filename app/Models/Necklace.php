@@ -37,4 +37,10 @@ class Necklace extends Model
     {
         return $this->belongsToMany(User::class, 'necklace_user', 'necklace_id', 'user_id');
     }
+
+
+    public function shopItem()
+{
+    return $this->morphOne(ShopItem::class, 'itemable');
+}
 }

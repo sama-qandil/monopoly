@@ -18,4 +18,10 @@ class Character extends Model
         return $this->belongsToMany(User::class)
             ->withPivot('current_level', 'current_experience', 'is_selected');
     }
+
+
+    public function shopItem()
+{
+    return $this->morphOne(ShopItem::class, 'itemable');
+}
 }

@@ -13,7 +13,7 @@ class Friend_invite extends Model
     /** @use HasFactory<\Database\Factories\FriendInviteFactory> */
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['sender_id', 'receiver_id', 'status','delivered_at']; 
     // TODO: missing fillable
 
     public function inboxes()

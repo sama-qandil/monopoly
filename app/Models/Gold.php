@@ -34,4 +34,10 @@ class Gold extends Model
     }
 
     protected $appends = ['icon_url'];
+
+
+    public function shopItem()
+{
+    return $this->morphOne(ShopItem::class, 'itemable');
+}
 }

@@ -16,18 +16,20 @@ class TaskController extends Controller
     {
 
         $tasks = $request->user()->tasks()
-            ->where('tasks.type', $type) // TODO: better use ->where('type', $type), no need for tasks.type
+            ->where('type', $type) // TODO: better use ->where('type', $type), no need for tasks.type
             ->get();
 
         return $this->success(TaskResource::collection($tasks), 'Tasks retrieved successfully');
     }
 
-    public function collect(Request $request, $taskId) // TODO: Search on Model Binding in laravel
-    {
-        $user = $request->user();
+   public function collect(Request $request, Task $task)
+{
+    $user = $request->user();
 
-        $task = $user->tasks()->where('tasks.id', $taskId)->firstOrFail();
-
+   
+    if (!$user->tasks->contains($task)) {
+         return $this->error('Task not found for this user', 404);
+    }
         $progress = $task->pivot;
 
         if (! $progress || ! $progress->is_completed || $progress->is_collected) {
