@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Laravel\Sanctum\HasApiTokens;
 
-class Friend_message extends Model
+class FriendMessage extends Model
 {
     use HasApiTokens;
 
@@ -15,9 +15,5 @@ class Friend_message extends Model
 
     protected $guarded = [];
 
-    public function inboxes()
-    {
-
-        return $this->morphMany(Inbox::class, 'inboxable');
-    }
+    
 }

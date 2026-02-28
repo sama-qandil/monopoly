@@ -13,7 +13,7 @@ class Event extends Model
     /** @use HasFactory<\Database\Factories\EventFactory> */
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['name', 'description', 'start_date', 'end_date']; 
     // TODO: missing fillable
 
     public function quests()

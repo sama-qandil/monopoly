@@ -15,26 +15,27 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('username')->unique();
-            $table->string('device_id')->unique();
+            $table->string('device_id')->unique()->nullable();
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
 
             $table->integer('current_experience')->default(0);
             $table->integer('level')->default(1);
 
-            $table->integer('wins')->default(0);
-            $table->integer('loses')->default(0);
+        $table->integer('wins')->default(0); 
+        $table->integer('loses')->default(0); 
 
-            $table->integer('gold')->default(0);
-            $table->integer('gems')->default(0);
-
-            $table->string('avatar')->default('default.png'); // TODO: remove db default and handle it in the model accessor (HINT: avatar_url)
-
-            $table->integer('fav_character_id')->nullable();
+       
+        $table->integer('gold')->default(0);
+        $table->integer('gems')->default(0);
+        
+        $table->string('avatar'); //remove db default and handle it in the model accessor (HINT: avatar_url)
+        
+        $table->integer('fav_character_id')->nullable();
 
             $table->string('provider_name')->nullable();
             $table->integer('provider_id')->nullable();
-            $table->rememberToken(); // TODO: #minor| search on rememberToken usage
+            //$table->rememberToken(); // TODO: #minor| search on rememberToken usage
             $table->timestamps();
         });
 

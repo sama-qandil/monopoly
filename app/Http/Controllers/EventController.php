@@ -10,8 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class EventController extends Controller
 {
+
+   
+
     public function getActiveEvents()
     {
+
         $now = Carbon::now();
 
         $events = Event::with('quests')

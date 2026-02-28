@@ -17,21 +17,10 @@ class UserResource extends JsonResource
         return [
             'name' => $this->username,
             'email' => $this->email,
-            'country' => $this->whenLoaded('country', function () {
-                // TODO: it is better to seperatre this into a country resource
-                return [
-                    'name' => $this->country->name,
-                    'flag' => $this->country->flag_code,
-                ];
-            }),
+            'country' => new CountryResource($this->whenLoaded('country')),
+            
 
-            'favorite_character' => $this->whenLoaded('favoriteCharacter', function () {
-                // TODO: it is better to seperatre this into a favorite_character resource
-                return [
-                    'name' => $this->favoriteCharacter?->name,
-                    'avatar' => $this->favoriteCharacter?->avatar,
-                ];
-            }),
+            'favorite_character' => new CharacterResource($this->whenLoaded('favoriteCharacter')),
 
             'stats' => [
                 'total_matches' => $this->total_matches,

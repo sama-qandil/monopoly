@@ -16,4 +16,10 @@ class Jewelry extends Model
     {
         return $this->belongsToMany(User::class, 'jewelry_user', 'jewelry_id', 'user_id');
     }
+
+
+    public function shopItem()
+{
+    return $this->morphOne(ShopItem::class, 'itemable');
+}
 }

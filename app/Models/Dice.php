@@ -11,7 +11,7 @@ class Dice extends Model
 
     use HasApiTokens;
 
-    protected $guarded = [];
+    protected $fillable = ['name', 'icon','description', 'gems_cost'];
 
     protected $appends = ['icon_url'];
 
@@ -19,4 +19,9 @@ class Dice extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    public function shopItem()
+{
+    return $this->morphOne(ShopItem::class, 'itemable');
+}
 }

@@ -3,6 +3,15 @@
 use App\Http\Controllers\AuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\StoreController;
+use App\Http\Controllers\TaskController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\FriendInviteController;
+use App\Http\Controllers\SystemMessageController;
+use App\Http\Controllers\NecklaceSlotController;
+use App\Http\Controllers\EventController;
+use App\Http\Controllers\EquippedNecklaceController;
+
 
 // بتعرفني اليوزر اللي موجود اللوقتي عن طريق التوكن بتاعه من غير ما احتاج بيانات منه
 Route::get('/user', function (Request $request) {
@@ -29,58 +38,37 @@ Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanc
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/link-account', [AuthController::class, 'LinkAccount']);
-});
 
-Route::middleware('auth:sanctum')->group(function () {
+
+
 
     Route::prefix('store')->group(function () {
 
         // TODO: NEVER use (App\Http\Controllers\StoreController) import namespace and use StoreController directly
-        Route::get('/category/{category}', [App\Http\Controllers\StoreController::class, 'getitemByCategory']);
-        Route::get('/item/{category}/{id}', [App\Http\Controllers\StoreController::class, 'getitemDetails']);
+        Route::get('/category/{category}', [StoreController::class, 'getItemsByCategory']);
+        Route::get('/item/{shopItem}', [StoreController::class, 'getItemDetails']);
+        Route::post('/buy/{shopItem}', [StoreController::class, 'buyItem']);
 
-        Route::prefix('buy')->group(function () {
-            Route::post('/character/{id}', [App\Http\Controllers\StoreController::class, 'buyCharacter']);
-            Route::post('/dice/{id}', [App\Http\Controllers\StoreController::class, 'buyDice']);
-            Route::post('/necklace/{id}', [App\Http\Controllers\StoreController::class, 'buyNecklaces']);
-            Route::post('/gold/{id}', [App\Http\Controllers\StoreController::class, 'buyGold']);
-            Route::post('/jewelry/{id}', [App\Http\Controllers\StoreController::class, 'buyJewelry']);
-        });
-    });
+    
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/tasks/{type}', [App\Http\Controllers\TaskController::class, 'index']);
-    Route::post('/tasks/{taskId}/collect', [App\Http\Controllers\TaskController::class, 'collect']);
-});
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/profile', [App\Http\Controllers\UserController::class, 'profile']);
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/send-friend-invite', [App\Http\Controllers\FriendInviteController::class, 'sendfriendinvites']);
-    Route::post('/friends-invite/{senderId}/accept', [App\Http\Controllers\FriendInviteController::class, 'Acceptinvite']);
-    Route::post('/friends-invite/{senderId}/decline', [App\Http\Controllers\FriendInviteController::class, 'Declineinvite']);
-
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/send-system-message', [App\Http\Controllers\SystemMessageController::class, 'index']);
-    Route::post('/messages/{id}/mark-as-read', [App\Http\Controllers\SystemMessageController::class, 'markAsRead']);
-
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/buy-slot/{slotId}', [App\Http\Controllers\NecklaceSlotController::class, 'buySlot']);
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/event', [App\Http\Controllers\EventController::class, 'getActiveEvents']);
-    Route::post('/event/{id}/buy-prize', [App\Http\Controllers\EventController::class, 'buyPrize']);
-
-});
-
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/equipNecklace', [App\Http\Controllers\EquippedNecklaceController::class, 'equip']);
+    Route::get('/tasks/{type}', [TaskController::class, 'index']);
+    Route::post('/tasks/{task}/collect', [TaskController::class, 'collect']);
+//
+    Route::get('/profile', [UserController::class, 'profile']);
+//
+    Route::post('/send-friend-invite', [FriendInviteController::class, 'sendfriendinvites']);
+    Route::post('/friends-invite/{senderId}/accept', [FriendInviteController::class, 'Acceptinvite']);
+    Route::post('/friends-invite/{senderId}/decline', [FriendInviteController::class, 'Declineinvite']);
+//
+    Route::post('/send-system-message', [SystemMessageController::class, 'index']);
+    Route::post('/messages/{id}/mark-as-read', [SystemMessageController::class, 'markAsRead']);
+//
+    Route::post('/buy-slot/{slotId}', [NecklaceSlotController::class, 'buySlot']);
+//
+    Route::post('/event', [EventController::class, 'getActiveEvents']);
+    Route::post('/event/{id}/buy-prize', [EventController::class, 'buyPrize']);
+//
+    Route::post('/equipNecklace', [EquippedNecklaceController::class, 'equip']);
 });

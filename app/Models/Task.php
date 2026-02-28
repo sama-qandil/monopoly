@@ -11,7 +11,7 @@ class Task extends Model
     /** @use HasFactory<\Database\Factories\TaskFactory> */
     use HasApiTokens, HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['type','name', 'description', 'target_count', 'reward_gems','reward_gold','reward_points'];
 
     // TODO: missing fillable
     public function users()

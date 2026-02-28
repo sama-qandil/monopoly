@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('characters', function (Blueprint $table) {
+        Schema::create('shop_items', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('gender');
             $table->string('category');
-            $table->string('ability');
-            $table->integer('max_level')->default(1);
-            $table->string('avatar');
-            $table->integer('gold_price');
-            $table->integer('gems_price');
+            $table->morphs('itemable');
+            $table->integer('price');
+            $table->enum('currency_type', ['gold', 'gems']);
+            $table->boolean('is_active')->default(true); 
+            $table->integer('discount_percentage')->default(0);
             $table->timestamps();
-        }
-        );
+        });
     }
 
     /**
@@ -31,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('shop_items');
     }
 };

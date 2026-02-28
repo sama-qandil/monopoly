@@ -10,7 +10,7 @@ class Quest extends Model
     /** @use HasFactory<\Database\Factories\RewardFactory> */
     use HasFactory;
 
-    protected $guarded = [];
+    protected $fillable = ['name', 'prize_name', 'prize_icon', 'price', 'event_id'];
 
     // TODO: missing fillable
 
