@@ -9,6 +9,7 @@ use App\Http\Resources\DiceResource;
 use App\Http\Resources\GoldResource;
 use App\Http\Resources\NecklaceResource;
 use App\Http\Resources\ShopItemResource;
+use App\Http\Resources\UserResource;
 use App\Models\Character;
 use App\Models\Dice;
 use App\Models\Gold;
@@ -166,7 +167,7 @@ class StoreController extends Controller
             ->where('is_active', true)
             ->paginate(15);
 
-        return $this->success(['items'=>ShopItemResource::collection($items), "Items retrieved successfully"]);
+       return $this->success(ShopItemResource::collection($items), "Items retrieved successfully");
     }
 
     
@@ -184,19 +185,19 @@ class StoreController extends Controller
              
         $finalPrice = $shopItem->price - ($shopItem->price * ($shopItem->discount_percentage / 100));
 
-        if ($user->{$shopItem->currency_type} < $finalPrice) {
+        if ($user->{$shopItem->currency_type->value} < $finalPrice) {
             return $this->error('Your balance is not enough!', 400);
         }
 
         DB::transaction(function () use ($user, $shopItem, $finalPrice, $item) {
               
-            $user->decrement($shopItem->currency_type, $finalPrice);
+            $user->decrement($shopItem->currency_type->value, $finalPrice);
 
             
             $this->attachItemToUser($user, $shopItem);
         });
 
-        return $this->success(null, 'Purchase successful!');
+        return $this->success(new UserResource($user), 'Purchase successful!');
     }
 
          

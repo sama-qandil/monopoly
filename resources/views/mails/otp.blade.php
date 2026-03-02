@@ -1,0 +1,1 @@
+<h1>Verification Code: {{ $otp }}</h1>

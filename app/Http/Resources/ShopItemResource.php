@@ -38,6 +38,7 @@ class ShopItemResource extends JsonResource
             'dices'      => new DiceResource($this->itemable),
             'necklaces'  => new NecklaceResource($this->itemable),
             'gold'       => new GoldResource($this->itemable),
+            'gem'        => new GemsResource($this->itemable),
             default      => $this->itemable,        
         };
     }

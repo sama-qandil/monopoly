@@ -14,7 +14,7 @@ class SystemMessageController extends Controller
             ->latest()
             ->get();
 
-        return $this->success(['message'=>new SystemMessageResource($messages), 'Messages retrieved successfully']); // TODO: use resource
+        return $this->success([new SystemMessageResource($messages), 'Messages retrieved successfully']); // TODO: use resource
     }
 
     public function markAsRead(Request $request, $id)
