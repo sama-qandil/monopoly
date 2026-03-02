@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('category');
             $table->morphs('itemable');
             $table->integer('price');
-            $table->enum('currency_type', ['gold', 'gems']);
+            $table->string('currency_type');
             $table->boolean('is_active')->default(true); 
             $table->integer('discount_percentage')->default(0);
             $table->timestamps();

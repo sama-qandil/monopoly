@@ -37,9 +37,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/link-account', [AuthController::class, 'LinkAccount']);
+    Route::post('auth/link-account', [AuthController::class, 'LinkAccount']);
 
-
+    Route::post('auth/verify-otp', [AuthController::class, 'verifyOtp']);
 
 
     Route::prefix('store')->group(function () {
@@ -65,7 +65,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/send-system-message', [SystemMessageController::class, 'index']);
     Route::post('/messages/{id}/mark-as-read', [SystemMessageController::class, 'markAsRead']);
 //
-    Route::post('/buy-slot/{slotId}', [NecklaceSlotController::class, 'buySlot']);
+    Route::post('/buy-slot/{slotNumber}', [NecklaceSlotController::class, 'buySlot']);
 //
     Route::post('/event', [EventController::class, 'getActiveEvents']);
     Route::post('/event/{id}/buy-prize', [EventController::class, 'buyPrize']);

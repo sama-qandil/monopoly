@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Enums\CurrencyType;
 
 class User extends Authenticatable
 {
@@ -72,6 +73,7 @@ public function avatarUrl(): Attribute
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'currency_type' => CurrencyType::class,
         ];
     }
 
