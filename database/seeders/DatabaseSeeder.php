@@ -18,8 +18,9 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-        'username' => 'SamaEhab',
+        User::updateOrCreate([
+        'username' => 'SamaEhab'],
+        [
         'email' => 'sama@example.com',
         'password' => Hash::make('password123'),   
         'level'=>2,
@@ -35,6 +36,8 @@ class DatabaseSeeder extends Seeder
         CharacterSeeder::class,
         DiceSeeder::class,
         NecklaceSeeder::class,
+        GoldSeeder::class,
+        GemSeeder::class,
     ]);
     }
 }

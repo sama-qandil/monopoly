@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('gold', function (Blueprint $table) {
             $table->id();
             $table->integer('amount');
-            $table->integer('gems_cost');
             $table->string('icon');
             $table->timestamps();
         });

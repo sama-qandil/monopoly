@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Jewelry extends Model
+class Gem extends Model
 {
-    /** @use HasFactory<\Database\Factories\JewelryFactory> */
+    /** @use HasFactory<\Database\Factories\GemFactory> */
     use HasFactory;
 
     protected $guarded = [];
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'jewelry_user', 'jewelry_id', 'user_id');
+        return $this->belongsToMany(User::class, 'gem_user', 'gem_id', 'user_id');
     }
 
 

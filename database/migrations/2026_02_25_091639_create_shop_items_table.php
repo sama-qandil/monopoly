@@ -18,7 +18,7 @@ return new class extends Migration
             $table->integer('price');
             $table->string('currency_type');
             $table->boolean('is_active')->default(true); 
-            $table->integer('discount_percentage')->default(0);
+            // $table->integer('discount_percentage')->default(0);
             $table->timestamps();
         });
     }

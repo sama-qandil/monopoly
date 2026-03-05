@@ -15,7 +15,10 @@ return new class extends Migration
             $table->id();
             $table->integer('slot_number');
             $table->integer('required_level');
-            $table->integer('price');
+            $table->string('currency_type');
+            // $table->integer('gold_cost');
+            // $table->integer('gems_cost');
+
             $table->timestamps();
         });
     }

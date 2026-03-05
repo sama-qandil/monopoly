@@ -19,8 +19,7 @@ return new class extends Migration
             $table->string('ability');
             $table->integer('max_level')->default(1);
             $table->string('avatar');
-            $table->integer('gold_price');
-            $table->integer('gems_price');
+
             $table->timestamps();
         }
         );

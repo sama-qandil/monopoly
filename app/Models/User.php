@@ -93,9 +93,9 @@ public function avatarUrl(): Attribute
         return $this->belongsToMany(Gold::class, 'gold_user');
     }
 
-    public function jewelries()
+    public function gems()
     {
-        return $this->belongsToMany(Jewelry::class, 'jewelry_user');
+        return $this->belongsToMany(Gem::class, 'gem_user');
     }
 
     public function necklaces()
@@ -149,7 +149,7 @@ public function avatarUrl(): Attribute
 
     public function unlockedSlots()
     {
-        return $this->belongsToMany(NecklaceSlot::class, 'necklace_slot_users')
+        return $this->belongsToMany(NecklaceSlot::class, 'unlocked_slots')
             ->withTimestamps();
     }
 

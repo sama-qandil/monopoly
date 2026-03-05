@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description');
-            $table->integer('gems_cost');
+
             $table->string('icon');
             $table->timestamps();
 
