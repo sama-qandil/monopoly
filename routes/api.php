@@ -48,6 +48,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/category/{category}', [StoreController::class, 'getItemsByCategory']);
         Route::get('/item/{shopItem}', [StoreController::class, 'getItemDetails']);
         Route::post('/buy/{shopItem}', [StoreController::class, 'buyItem']);
+        Route::get('/item-details/{itemId}', [StoreController::class, 'getItemDetails']);
 
     
 });

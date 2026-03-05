@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\EventResource;
 use App\Models\Event;
 use App\Models\Quest;
 use Carbon\Carbon;
@@ -21,9 +22,9 @@ class EventController extends Controller
         $events = Event::with('quests')
             ->where('start_date', '<=', $now)
             ->where('end_date', '>=', $now)
-            ->get();
+            ->first();
 
-        return $this->success($events, 'Events retrieved successfully');
+        return $this->success(new EventResource($events), 'Events retrieved successfully');
     }
 
     public function buyPrize(Request $request, $questId)
@@ -36,7 +37,7 @@ class EventController extends Controller
         }
 
         if ($user->quests()->where('quest_id', $questId)->exists()) {
-            return $this->error('You already have this prize, my friend!');
+            return $this->error('You already have this prize');
         }
 
         if ($user->gold < $quest->price) {

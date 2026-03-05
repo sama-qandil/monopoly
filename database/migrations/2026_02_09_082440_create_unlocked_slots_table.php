@@ -1,6 +1,6 @@
 <?php
 
-use App\Models\Jewelry;
+use App\Models\NecklaceSlot;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -13,11 +13,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        schema::create('jewelry_user', function (Blueprint $table) {
+        Schema::create('unlocked_slots', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Jewelry::class)->constrained()->cascadeOnDelete();
-
+            $table->foreignIdFor(NecklaceSlot::class)->constrained()->cascadeOnDelete();
+            $table->timestamp('unlocked_at')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::dropIfExists('necklace_slot_users');
     }
 };

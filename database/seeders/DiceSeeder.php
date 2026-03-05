@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 
 use App\Models\Dice;
+use App\Enums\CurrencyType;
+
 
 class DiceSeeder extends Seeder
 {
@@ -13,26 +15,53 @@ class DiceSeeder extends Seeder
      */
     public function run(): void
     {
-       Dice::create([
-            'name' => 'النرد الكلاسيكي',
-            'description' => 'نرد خشبي بسيط للمبتدئين في اللعبة.',
-            'gems_cost' => 100,  
+       $dice1= Dice::create([
+            'name' => 'classic dice',
+            'description' => 'A simple wooden dice for beginners in the game.',
+            
             'icon' => 'classic_dice.png',
         ]);
 
+       $dice1->shopItem()->create([
+        'category'=>'dices',
+        'itemable_type'=>Dice::class,
+        'itemable_id'=>$dice1->id,
+        'price'=>200,
+        'currency_type'=>CurrencyType::GEMS,
+        'is_active'=>true,
+    ]);
+
  
-        Dice::create([
-            'name' => 'نرد اليقطين المرعب',
-            'description' => 'نرد خاص بإيفينت الهالوين يزيد من حظك في الهروب من السجن.',
-            'gems_cost' => 500,
+        $dice2= Dice::create([
+            'name' => 'halloween dice',
+            'description' => 'A special dice for the Halloween event that increases your luck in escaping jail.',
+            
             'icon' => 'halloween_dice.png',
         ]);
 
-        Dice::create([
-            'name' => 'النرد الملكي الذهبي',
-            'description' => 'نرد مصنوع من الذهب الخالص، يظهر ثراء اللاعب أمام الخصوم.',
-            'gems_cost' => 1500,
+         $dice2->shopItem()->create([
+        'category'=>'dices',
+        'itemable_type'=>Dice::class,
+        'itemable_id'=>$dice2->id,
+        'price'=>150,
+        'currency_type'=>CurrencyType::GEMS,
+        'is_active'=>true,
+    ]);
+
+        $dice3= Dice::create([
+            'name' => 'royal gold dice',
+            'description' => 'A dice made of pure gold, showing the players wealth before their opponents.',
+            
             'icon' => 'royal_gold_dice.png',
         ]);
+
+         $dice3->shopItem()->create([
+        'category'=>'dices',
+        'itemable_type'=>Dice::class,
+        'itemable_id'=>$dice3->id,
+        'price'=>200,
+        'currency_type'=>CurrencyType::GEMS,
+        'is_active'=>true,
+    ]);
     }
 }

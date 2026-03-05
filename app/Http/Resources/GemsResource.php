@@ -14,6 +14,10 @@ class GemsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id"=> $this->id,
+            'money_cost' => $this->money_cost,
+            'icon' => $this->icon,
+        ];
     }
 }

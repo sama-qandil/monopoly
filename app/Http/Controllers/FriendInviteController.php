@@ -36,7 +36,7 @@ class FriendInviteController extends Controller
             return $this->success($invite, 'Friend invite accepted successfully');
         }
 
-        return $this->error(null, 'Friend invite not found');
+        return $this->error( 'Friend invite not found');
     }
 
     public function Declineinvite(Request $request, $senderId)
@@ -54,6 +54,6 @@ class FriendInviteController extends Controller
             return $this->success($invite, 'Friend invite declined successfully');
         }
 
-        return $this->error(null, 'Friend invite not found');
+        return $this->error('Friend invite not found');
     }
 }

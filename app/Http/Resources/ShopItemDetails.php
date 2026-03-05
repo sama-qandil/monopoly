@@ -5,7 +5,7 @@ namespace App\Http\Resources;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ShopItemResource extends JsonResource
+class ShopItemDetails extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -21,7 +21,7 @@ class ShopItemResource extends JsonResource
             'currency_type' => $this->currency_type,
             'is_active' => $this->is_active,
            
-            
+            'item_details' => $this->resolveItemResource(),
         ];
     }
 

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\Necklace;
+use App\Enums\CurrencyType;
 
 class NecklaceSeeder extends Seeder
 {
@@ -12,13 +13,21 @@ class NecklaceSeeder extends Seeder
      */
     public function run(): void
     {
-        Necklace::create([
-            'name' => 'قلادة الحظ الخشبية',
-            'description' => 'قلادة بسيطة تزيد من احتمالية الحصول على أرقام زوجية في النرد.',
-            'gold_cost' => 1000,
-            'gems_cost' => 0,
-            'icon' => 'wooden_necklace.png',
+        $necklace1 = Necklace::create([
+            'name' => '  Wooden Necklace',
+            'description' => 'A simple wooden necklace that increases the player\'s luck in escaping jail.',
             'classification' => 'medium',
+            'icon' => 'wooden_necklace.png',
+            
         ]);
+
+         $necklace1->shopItem()->create([
+        'category'=>'necklaces',
+        'itemable_type'=>Necklace::class,
+        'itemable_id'=>$necklace1->id,
+        'price'=>200,
+        'currency_type'=>CurrencyType::GEMS,
+        'is_active'=>true,
+    ]);
     }
 }

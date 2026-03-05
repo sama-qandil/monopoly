@@ -9,6 +9,8 @@ use App\Http\Resources\DiceResource;
 use App\Http\Resources\GoldResource;
 use App\Http\Resources\NecklaceResource;
 use App\Http\Resources\ShopItemResource;
+use App\Http\Resources\ShopItemDetails;
+
 use App\Http\Resources\UserResource;
 use App\Models\Character;
 use App\Models\Dice;
@@ -162,7 +164,8 @@ class StoreController extends Controller
 
     public function getItemsByCategory(Request $request, $category)
     {
-        $items = ShopItem::with('itemable')
+    
+    $items = ShopItem::with('itemable')
             ->where('category', $category)
             ->where('is_active', true)
             ->paginate(15);
@@ -170,7 +173,12 @@ class StoreController extends Controller
        return $this->success(ShopItemResource::collection($items), "Items retrieved successfully");
     }
 
-    
+    public function getItemDetails(Request $request,$itemId)
+    {
+        $item=ShopItem::with('itemable')->findOrFail($itemId);
+        return $this->success(new ShopItemDetails($item), "Item details retrieved successfully");
+    }
+
     public function buyItem(Request $request, $shopItemId)
     {
         $user = $request->user();
@@ -183,15 +191,16 @@ class StoreController extends Controller
         }
 
              
-        $finalPrice = $shopItem->price - ($shopItem->price * ($shopItem->discount_percentage / 100));
+        // $finalPrice = $shopItem->price - ($shopItem->price * ($shopItem->discount_percentage / 100));
+        $price=$shopItem->price;
 
-        if ($user->{$shopItem->currency_type->value} < $finalPrice) {
+        if ($user->{$shopItem->currency_type->value} < $price) {
             return $this->error('Your balance is not enough!', 400);
         }
 
-        DB::transaction(function () use ($user, $shopItem, $finalPrice, $item) {
+        DB::transaction(function () use ($user, $shopItem, $price, $item) {
               
-            $user->decrement($shopItem->currency_type->value, $finalPrice);
+            $user->decrement($shopItem->currency_type->value, $price);
 
             
             $this->attachItemToUser($user, $shopItem);
@@ -224,6 +233,9 @@ class StoreController extends Controller
                 break;
             case 'gold':
                 $user->increment('gold', $shopItem->itemable->amount); 
+                break;
+                 case 'gems':
+                $user->increment('gems', $shopItem->itemable->amount); 
                 break;
             default:
                 $user->$category()->attach($shopItem->itemable_id);
